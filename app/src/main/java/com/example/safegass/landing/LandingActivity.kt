@@ -1,6 +1,7 @@
 package com.example.safegass.landing
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -32,24 +33,24 @@ class LandingActivity : Activity(), LandingContract.View {
         buttonGetStarted = findViewById(R.id.buttonGetStarted)
         iconInfo = findViewById(R.id.iconInfo)
 
-        // Initialize presenter with model
+        // Initialize MVP components
         presenter = LandingPresenter(LandingModel())
         presenter.attachView(this)
 
-        // Set initial UI text
+        // Load landing page content
         presenter.loadLandingContent()
 
-        // Button click event
+        // Set button listeners
         buttonGetStarted.setOnClickListener {
             presenter.onGetStartedClicked()
         }
 
-        // Optional info icon click
         iconInfo.setOnClickListener {
             presenter.onInfoClicked()
         }
     }
 
+    // View implementations
     override fun showAppName(name: String) {
         textAppName.text = name
     }
@@ -69,15 +70,19 @@ class LandingActivity : Activity(), LandingContract.View {
     override fun navigateToNextScreen() {
         val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
-        finish()
+        finish() // optional: closes the landing screen
     }
 
     override fun showInfoDialog() {
-        // You can later implement an AlertDialog or Toast here
+        AlertDialog.Builder(this)
+            .setTitle("About SafeGass")
+            .setMessage("SafeGass helps detect and monitor gas leaks to ensure your family's safety.")
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         presenter.detachView()
+        super.onDestroy()
     }
 }

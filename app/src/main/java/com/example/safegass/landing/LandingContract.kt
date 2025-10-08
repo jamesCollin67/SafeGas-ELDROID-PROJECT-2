@@ -1,6 +1,7 @@
 package com.example.safegass.landing
 
 interface LandingContract {
+
     interface View {
         fun showAppName(name: String)
         fun showMainTitle(title: String)

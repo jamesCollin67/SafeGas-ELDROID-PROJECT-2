@@ -2,10 +2,7 @@ package com.example.safegass.dashboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.safegass.R
 import com.example.safegass.alert.AlertActivity
@@ -37,13 +34,21 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
     private lateinit var navHistory: LinearLayout
     private lateinit var navSettings: LinearLayout
 
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
         presenter = DashboardPresenter(this)
+        initViews()
+        initListeners()
 
-        // Initialize views
+        // Load data
+        presenter.loadDashboardData()
+    }
+
+    private fun initViews() {
         textPPM = findViewById(R.id.textPPM)
         textStatus = findViewById(R.id.textStatus)
         textLocation = findViewById(R.id.textLocation)
@@ -59,17 +64,19 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
         buttonMuteAlarm = findViewById(R.id.buttonMuteAlarm)
         menuIcon = findViewById(R.id.menuIcon)
 
-        // Bottom nav initialization
         navDashboard = findViewById(R.id.navDashboard)
         navAlerts = findViewById(R.id.navAlerts)
         navHistory = findViewById(R.id.navHistory)
         navSettings = findViewById(R.id.navSettings)
 
-        // === Navigation handling ===
-        navDashboard.setOnClickListener {
-            // Already on dashboard, maybe do nothing or refresh
+        // Optional loading indicator
+        progressBar = ProgressBar(this).apply {
+            isIndeterminate = true
+            visibility = ProgressBar.GONE
         }
+    }
 
+    private fun initListeners() {
         navAlerts.setOnClickListener {
             startActivity(Intent(this, AlertActivity::class.java))
             overridePendingTransition(0, 0)
@@ -85,8 +92,9 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
             overridePendingTransition(0, 0)
         }
 
-        // Load dashboard data
-        presenter.loadDashboardData()
+        buttonViewDetails.setOnClickListener { presenter.onViewDetailsClicked() }
+        buttonMuteAlarm.setOnClickListener { presenter.onMuteAlarmClicked() }
+        buttonCallEmergency.setOnClickListener { presenter.onCallEmergencyClicked() }
     }
 
     // ==== Contract View Methods ====
@@ -105,5 +113,13 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
 
     override fun showLastUpdated(time: String) {
         textLastUpdated.text = time
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showLoading(isLoading: Boolean) {
+        progressBar.visibility = if (isLoading) ProgressBar.VISIBLE else ProgressBar.GONE
     }
 }

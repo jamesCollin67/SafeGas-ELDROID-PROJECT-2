@@ -13,10 +13,12 @@ class LandingPresenter(private val model: LandingContract.Model) : LandingContra
     }
 
     override fun loadLandingContent() {
-        view?.showAppName(model.getAppName())
-        view?.showMainTitle(model.getMainTitle())
-        view?.showWelcomeText(model.getWelcomeText())
-        view?.showDescription(model.getDescription())
+        view?.apply {
+            showAppName(model.getAppName())
+            showMainTitle(model.getMainTitle())
+            showWelcomeText(model.getWelcomeText())
+            showDescription(model.getDescription())
+        }
     }
 
     override fun onGetStartedClicked() {

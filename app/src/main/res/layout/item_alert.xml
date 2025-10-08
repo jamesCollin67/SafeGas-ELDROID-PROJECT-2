@@ -18,6 +18,13 @@
         android:textSize="14sp"
         android:textColor="#000000" />
 
+    <!-- item_alert.xml -->
+    <TextView
+        android:id="@+id/textAlertTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
     <!-- Location -->
     <TextView
         android:id="@+id/txtLocation"
