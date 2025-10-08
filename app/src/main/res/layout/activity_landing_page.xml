@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".landing.LandingActivity">
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <!-- Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/textAppName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SafeGas"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:layout_centerHorizontal="true" />
+
+                <ImageView
+                    android:id="@+id/iconInfo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_info"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="Info icon" />
+            </RelativeLayout>
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/textMainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Real-time Gas Leak\nDetection for Your Safety"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Illustration -->
+            <ImageView
+                android:id="@+id/imageHouseGas"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:src="@drawable/gas"
+                android:scaleType="fitCenter"
+                android:contentDescription="SafeGas house illustration" />
+
+            <!-- Welcome text -->
+            <TextView
+                android:id="@+id/textWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome to SafeGas"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginTop="24dp" />
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your home’s safety, our priority. SafeGas offers real-time gas leak detection, ensuring your peace of mind."
+                android:textColor="#7A7A7A"
+                android:textAlignment="center"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="48dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Fixed button at bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <Button
+            android:id="@+id/buttonGetStarted"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Get Started"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_background_green" />
+    </LinearLayout>
+
+</LinearLayout>

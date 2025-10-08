@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/bg_card"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- Message text -->
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Danger: Gas leak detected"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#000000" />
+
+    <!-- Location -->
+    <TextView
+        android:id="@+id/txtLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kitchen Sensor"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:layout_marginTop="2dp"/>
+
+    <!-- Time -->
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 min ago"
+        android:textSize="12sp"
+        android:textColor="#888888"
+        android:layout_marginTop="2dp"/>
+</LinearLayout>

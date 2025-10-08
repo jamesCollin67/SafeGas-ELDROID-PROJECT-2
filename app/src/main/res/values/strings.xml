@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SafeGass</string>
+    <string name="leak_icon_desc">Gas leak icon</string>
+</resources>
