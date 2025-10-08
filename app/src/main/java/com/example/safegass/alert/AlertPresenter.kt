@@ -1,34 +1,14 @@
 package com.example.safegass.alert
 
-class AlertPresenter(private val model: AlertModel) : AlertContract.Presenter {
-
-    private var view: AlertContract.View? = null
-
-    override fun attachView(view: AlertContract.View) {
-        this.view = view
-    }
-
-    override fun detachView() {
-        view = null
-    }
+class AlertPresenter(private val view: AlertContract.View) : AlertContract.Presenter {
 
     override fun loadAlerts() {
-        view?.showLoading()
-        try {
-            val alerts = model.getAlerts()
-            view?.showAlerts(alerts)
-        } catch (e: Exception) {
-            view?.showError(e.message ?: "Unknown error")
-        } finally {
-            view?.hideLoading()
-        }
-    }
-
-    override fun muteAlarm(alertId: Int) {
-        model.muteAlert(alertId)
-    }
-
-    override fun callEmergency(alertId: Int) {
-        model.callEmergency(alertId)
+        // Replace with real data source
+        val alerts = listOf(
+            Alert("Danger", "Gas leak detected", "Kitchen Sensor", "2 min ago"),
+            Alert("Warning", "Low battery", "Living Room Sensor", "10 min ago"),
+            Alert("Info", "System check passed", "Main Panel", "1 hour ago")
+        )
+        view.showAlerts(alerts)
     }
 }

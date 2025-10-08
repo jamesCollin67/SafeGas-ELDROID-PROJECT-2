@@ -3,44 +3,35 @@ package com.example.safegass.alert
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safegass.R
 
-class AlertAdapter(
-    private var alerts: List<Alert>,
-    private val listener: AlertActionListener
-) : RecyclerView.Adapter<AlertAdapter.AlertViewHolder>() {
+class AlertAdapter(private var alerts: List<Alert>) :
+    RecyclerView.Adapter<AlertAdapter.AlertViewHolder>() {
 
-    interface AlertActionListener {
-        fun onMuteClicked(alertId: Int)
-        fun onCallEmergencyClicked(alertId: Int)
-    }
+    class AlertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val txtMessage: TextView = itemView.findViewById(R.id.txtMessage)
+        private val textAlertTitle: TextView = itemView.findViewById(R.id.textAlertTitle)
+        private val txtLocation: TextView = itemView.findViewById(R.id.txtLocation)
+        private val txtTime: TextView = itemView.findViewById(R.id.txtTime)
 
-    inner class AlertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.alertTitle)
-        val description: TextView = itemView.findViewById(R.id.alertDescription)
-        val source: TextView = itemView.findViewById(R.id.alertSource)
-        val timeAgo: TextView = itemView.findViewById(R.id.alertTime)
-        val btnMute: Button = itemView.findViewById(R.id.btnMuteAlarm)
-        val btnCall: Button = itemView.findViewById(R.id.btnCallEmergency)
+        fun bind(alert: Alert) {
+            txtMessage.text = alert.type
+            textAlertTitle.text = alert.title
+            txtLocation.text = alert.source
+            txtTime.text = alert.time
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_alert, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_alert, parent, false)
         return AlertViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: AlertViewHolder, position: Int) {
-        val alert = alerts[position]
-        holder.title.text = alert.title
-        holder.description.text = alert.description
-        holder.source.text = alert.source
-        holder.timeAgo.text = alert.timeAgo
-
-        holder.btnMute.setOnClickListener { listener.onMuteClicked(alert.id) }
-        holder.btnCall.setOnClickListener { listener.onCallEmergencyClicked(alert.id) }
+        holder.bind(alerts[position])
     }
 
     override fun getItemCount(): Int = alerts.size

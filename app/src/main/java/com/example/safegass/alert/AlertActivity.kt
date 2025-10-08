@@ -1,68 +1,68 @@
 package com.example.safegass.alert
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safegass.R
+import com.example.safegass.dashboard.DashboardActivity
+import com.example.safegass.history.HistoryActivity
+import com.example.safegass.settings.SettingsActivity
 
 class AlertActivity : AppCompatActivity(), AlertContract.View {
 
     private lateinit var presenter: AlertContract.Presenter
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerAlerts: RecyclerView
     private lateinit var adapter: AlertAdapter
-
-    // Buttons from Emergency Alert Card
-    private lateinit var btnMuteAlarm: Button
-    private lateinit var btnViewDetails: Button
-    private lateinit var btnCallEmergency: Button
-
-    // Tabs
-    private lateinit var tabAll: TextView
-    private lateinit var tabDanger: TextView
-    private lateinit var tabWarning: TextView
-    private lateinit var tabInfo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alert_gas)
 
-        // Initialize buttons
-        btnMuteAlarm = findViewById(R.id.btnMuteAlarm)
-        btnViewDetails = findViewById(R.id.btnViewDetails)
-        btnCallEmergency = findViewById(R.id.btnCallEmergency)
+        // --- RecyclerView setup ---
+        recyclerAlerts = findViewById(R.id.recyclerAlerts)
+        adapter = AlertAdapter(emptyList())
+        recyclerAlerts.layoutManager = LinearLayoutManager(this)
+        recyclerAlerts.adapter = adapter
 
-        // Initialize tabs
-        tabAll = findViewById(R.id.tabAll)
-        tabDanger = findViewById(R.id.tabDanger)
-        tabWarning = findViewById(R.id.tabWarning)
-        tabInfo = findViewById(R.id.tabInfo)
-
-        // RecyclerView setup
-        recyclerView = findViewById(R.id.recyclerAlerts)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = AlertAdapter(emptyList(), object : AlertAdapter.AlertActionListener {
-            override fun onMuteClicked(alertId: Int) {
-                presenter.muteAlarm(alertId)
-            }
-
-            override fun onCallEmergencyClicked(alertId: Int) {
-                presenter.callEmergency(alertId)
-            }
-        })
-        recyclerView.adapter = adapter
-
-        // Presenter setup
-        presenter = AlertPresenter(AlertModel())
-        presenter.attachView(this)
+        // --- Presenter setup ---
+        presenter = AlertPresenter(this)
         presenter.loadAlerts()
 
-        // Emergency card buttons
-        btnMuteAlarm.setOnClickListener { presenter.muteAlarm(1) } // Example
-        btnCallEmergency.setOnClickListener { presenter.callEmergency(1) } // Example
+        // --- Navigation bar setup ---
+        setupNavigationBar()
+    }
+
+    private fun setupNavigationBar() {
+        val navDashboard = findViewById<LinearLayout>(R.id.navDashboard)
+        val navAlerts = findViewById<LinearLayout>(R.id.navAlerts)
+        val navHistory = findViewById<LinearLayout>(R.id.navHistory)
+        val navSettings = findViewById<LinearLayout>(R.id.navSettings)
+
+        navDashboard.setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        navAlerts.setOnClickListener {
+            // already in AlertActivity, do nothing
+        }
+
+        navHistory.setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        navSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
     }
 
     override fun showAlerts(alerts: List<Alert>) {
@@ -71,14 +71,5 @@ class AlertActivity : AppCompatActivity(), AlertContract.View {
 
     override fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showLoading() { /* TODO: show progress */ }
-
-    override fun hideLoading() { /* TODO: hide progress */ }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.detachView()
     }
 }

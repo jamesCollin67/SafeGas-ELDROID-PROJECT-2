@@ -48,6 +48,8 @@
             android:layout_height="wrap_content"
             android:paddingBottom="80dp">
 
+
+
             <!-- Emergency Automation -->
             <TextView
                 android:layout_width="match_parent"
@@ -112,16 +114,17 @@
                 android:padding="10dp"
                 android:textSize="14sp" />
 
+            <!-- Cloud Sync -->
+
             <Button
                 android:id="@+id/btnApplyLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Apply"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#F5F5F5"
+                android:text="Apply"
                 android:textColor="#000000" />
 
-            <!-- Cloud Sync -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,16 +174,17 @@
                 android:textSize="14sp"
                 android:textColor="#333333" />
 
+            <!-- Connected Devices -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contact Support"
                 android:drawableRight="@drawable/ic_chevron_right"
                 android:drawablePadding="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textSize="14sp"
-                android:textColor="#333333" />
+                android:text="Contact Support"
+                android:textColor="#333333"
+                android:textSize="14sp" />
 
             <!-- Connected Devices -->
             <TextView
@@ -194,6 +198,7 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/textConnectedDevices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Kitchen Sensor"
@@ -202,13 +207,18 @@
                 android:textColor="#000000" />
 
             <TextView
+                android:id="@+id/btnConnectedDevices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Rename | Location | Remove\nBattery 82%, Last seen 2 min ago"
+                android:drawableRight="@drawable/ic_chevron_right"
                 android:textSize="12sp"
                 android:textColor="#666666"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
 
             <!-- Profile -->
             <TextView
@@ -225,7 +235,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Liam Harper"
-                android:drawableRight="@drawable/ic_chevron_right"
                 android:drawablePadding="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -236,7 +245,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="liam.harper@example.com"
-                android:drawableRight="@drawable/ic_chevron_right"
                 android:drawablePadding="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -244,7 +252,7 @@
                 android:textColor="#333333" />
 
             <Button
-                android:id="@+id/btnUpdatePassword"
+                android:id="@+id/btnUpdatesPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Update Password"
@@ -253,13 +261,14 @@
                 android:layout_marginTop="8dp" />
 
             <Button
-                android:id="@+id/btnForgotPassword"
+                android:id="@+id/btnViewProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Forgot Password"
+                android:text="VIEW PROFILE"
                 android:backgroundTint="#F5F5F5"
                 android:textColor="#000000"
                 android:layout_marginTop="8dp" />
+
 
             <!-- 🔹 LOG OUT BUTTON -->
             <Button

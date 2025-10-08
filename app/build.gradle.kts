@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(platform("androidx.compose:compose-bom:2025.01.00"))
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("com.google.android.material:material:1.13.0")

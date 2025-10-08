@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".profile.ProfilePageActivity">
+
+    <!-- Header Bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Menu"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <!-- Scrollable Profile Info -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Profile Image -->
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_user_avatar"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_bg"
+                android:clipToOutline="true" />
+
+            <!-- Name -->
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sophia Carter"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:textColor="#000000"
+                android:layout_marginTop="12dp" />
+
+            <!-- Profile Details -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="28dp">
+
+                <!-- Label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textColor="#888888"
+                    android:textSize="14sp" />
+
+                <!-- Value -->
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sophia Carter"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email for Alerts"
+                    android:textColor="#888888"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp" />
+
+                <!-- Value -->
+                <TextView
+                    android:id="@+id/textEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="sophia.carter@example.com"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phone for SMS Alerts"
+                    android:textColor="#888888"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp" />
+
+                <!-- Value -->
+                <TextView
+                    android:id="@+id/textPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(555) 123-4567"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginVertical="28dp" />
+
+            <!-- Support Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sensor Health  Support"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Troubleshooting (icon + label + chevron) -->
+            <LinearLayout
+                android:id="@+id/btnTroubleshoot"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#F8F9FB"
+                android:paddingHorizontal="12dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_help_outline"
+                    android:contentDescription="Help" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Troubleshooting Guides"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    android:contentDescription="Next" />
+            </LinearLayout>
+
+            <!-- Contact Support -->
+            <LinearLayout
+                android:id="@+id/btnSupport"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#F8F9FB"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_support_agent"
+                    android:contentDescription="Support" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Contact Support"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    android:contentDescription="Next" />
+            </LinearLayout>
+
+            <!-- Edit Profile Button -->
+            <Button
+                android:id="@+id/btnEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_background_green"
+                android:text="Edit Profile"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.safegass.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -40,7 +41,7 @@ class LoginActivity : Activity(), LoginContract.View {
         buttonSignIn.setOnClickListener {
             val email = editTextEmail.text.toString().trim()
             val password = editTextPassword.text.toString().trim()
-            presenter.handleLogin(email, password)
+            presenter.createAccount(email, password)
         }
 
         textForgotPassword.setOnClickListener {
@@ -75,4 +76,6 @@ class LoginActivity : Activity(), LoginContract.View {
     override fun showLoginError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+    override fun getContext(): Context = this
 }
