@@ -7,7 +7,6 @@ class DashboardPresenter(private val view: DashboardContract.View) : DashboardCo
 
     override fun loadDashboardData() {
         view.showLoading(true)
-        // Simulate data loading delay
         Handler(Looper.getMainLooper()).postDelayed({
             val ppm = "285 ppm"
             val status = "Safe"
@@ -26,7 +25,7 @@ class DashboardPresenter(private val view: DashboardContract.View) : DashboardCo
     }
 
     override fun onViewDetailsClicked() {
-        view.showError("Feature not implemented yet.")
+        view.showDetailsPage()   // ✅ Navigate to ViewPageActivity
     }
 
     override fun onMuteAlarmClicked() {

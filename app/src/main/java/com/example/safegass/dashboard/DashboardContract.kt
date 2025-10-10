@@ -8,6 +8,8 @@ interface DashboardContract {
         fun showLastUpdated(time: String)
         fun showError(message: String)
         fun showLoading(isLoading: Boolean)
+
+        fun showDetailsPage()   // ✅ Added
     }
 
     interface Presenter {

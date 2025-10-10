@@ -22,7 +22,8 @@ class RegisterActivity : Activity(), RegisterContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        presenter = RegisterPresenter(this)
+        presenter = RegisterPresenter(this, this)
+
 
         // Views (IDs must match your XML)
         val etFullName = findViewById<EditText>(R.id.editTextFullName)

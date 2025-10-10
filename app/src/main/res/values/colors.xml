@@ -7,4 +7,21 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background_white">#FFFFFF</color>
+
+    <!-- Primary text -->
+    <color name="text_black">#000000</color>
+
+    <!-- Highlighted/active values -->
+    <color name="text_green">#4CAF50</color>
+
+    <!-- Section titles -->
+    <color name="section_title">#000000</color>
+
+    <!-- Dark text colors -->
+    <color name="text_dark">#222222</color>
+    <color name="text_darker">#111111</color>
+    <color name="green">#4CAF50</color>
+
+
 </resources>

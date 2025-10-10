@@ -2,8 +2,10 @@ package com.example.safegass.register
 
 class RegisterPresenter(
     private val view: RegisterContract.View,
-    private val model: RegisterContract.Model = RegisterModel()
+    context: android.content.Context
 ) : RegisterContract.Presenter {
+
+    private val model: RegisterContract.Model = RegisterModel(context)
 
     override fun onRegisterClicked(
         fullName: String,
@@ -12,7 +14,6 @@ class RegisterPresenter(
         confirmPassword: String,
         agreedToTerms: Boolean
     ) {
-        // Basic validation on presenter level
         when {
             fullName.isBlank() || email.isBlank() || password.isBlank() || confirmPassword.isBlank() -> {
                 view.showRegistrationError("Please fill in all required fields.")
@@ -35,7 +36,6 @@ class RegisterPresenter(
                 return
             }
             else -> {
-                // Delegate to model
                 model.registerUser(fullName, email, password) { success, error ->
                     if (success) view.showRegistrationSuccess()
                     else view.showRegistrationError(error ?: "Registration failed.")
