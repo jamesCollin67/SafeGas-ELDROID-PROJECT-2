@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.safegass">
 
+    <!-- ✅ Permissions must be declared OUTSIDE <application> -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -52,7 +55,6 @@
             android:name=".dashboard.DashboardActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-
         <!-- ✅ Alert Activity -->
         <activity
             android:name=".alert.AlertActivity"
@@ -68,22 +70,27 @@
             android:name=".settings.SettingsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <!-- ✅ Connected Devices -->
         <activity
             android:name=".connected.ConnectedDevicesActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <!-- ✅ Profile Page -->
         <activity
             android:name=".profile.ProfilePageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <!-- ✅ Edit Profile -->
         <activity
             android:name=".edit.EditProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <!-- ✅ Update Password -->
         <activity
             android:name=".update.UpdatePasswordActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <!-- ✅ View Page -->
         <activity
             android:name=".view.ViewPageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

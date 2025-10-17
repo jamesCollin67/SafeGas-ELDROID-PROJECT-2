@@ -3,19 +3,27 @@ package com.example.safegass.dashboard
 interface DashboardContract {
 
     interface View {
-        fun showPPM(ppm: String, status: String, location: String)
-        fun showOverview(activeAlerts: Int, onlineDevices: Int, avgPpm: String, peakPpm: String)
-        fun showLastUpdated(time: String)
-        fun showError(message: String)
         fun showLoading(isLoading: Boolean)
-
-        fun showDetailsPage()   // ✅ Added
+        fun showPPM(ppm: String)
+        fun showStatus(status: String)
+        fun showLocation(location: String)
+        fun showLastUpdated(time: String)
+        fun showOverview(activeAlerts: Int, onlineDevices: Int, avgPpm: String, peakPpm: String)
+        fun showError(message: String)
     }
 
     interface Presenter {
-        fun loadDashboardData()
-        fun onViewDetailsClicked()
-        fun onMuteAlarmClicked()
-        fun onCallEmergencyClicked()
+        fun start()   // begin listening / loading
+        fun stop()    // cleanup listeners
+    }
+
+    interface Repository {
+        fun addListener(callback: RepositoryCallback)
+        fun removeListener()
+    }
+
+    interface RepositoryCallback {
+        fun onData(data: DashboardData)
+        fun onError(message: String)
     }
 }
