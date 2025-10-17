@@ -21,7 +21,7 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
 
     private lateinit var presenter: DashboardContract.Presenter
 
-    // Views from your layout
+    // Views from layout
     private lateinit var menuIcon: ImageView
     private lateinit var textAppName: TextView
     private lateinit var imageHouseGas: ImageView
@@ -41,7 +41,7 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
     private lateinit var textAveragePPM: TextView
     private lateinit var textPeakPPM: TextView
 
-    // bottom nav (included layout)
+    // bottom nav
     private lateinit var navDashboard: LinearLayout
     private lateinit var navAlerts: LinearLayout
     private lateinit var navHistory: LinearLayout
@@ -49,9 +49,9 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard) // your provided layout
+        setContentView(R.layout.activity_dashboard)
 
-        // Bind all views (IDs match your XML)
+        // Bind all views
         menuIcon = findViewById(R.id.menuIcon)
         textAppName = findViewById(R.id.textAppName)
         imageHouseGas = findViewById(R.id.imageHouseGas)
@@ -71,33 +71,26 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
         textAveragePPM = findViewById(R.id.textAveragePPM)
         textPeakPPM = findViewById(R.id.textPeakPPM)
 
-        // bottom nav (from include)
         navDashboard = findViewById(R.id.navDashboard)
         navAlerts = findViewById(R.id.navAlerts)
         navHistory = findViewById(R.id.navHistory)
         navSettings = findViewById(R.id.navSettings)
 
-        // MVP wiring
+        // MVP setup
         presenter = DashboardPresenter(this, DashboardRepository())
 
-        // Button actions that were present in your earlier code
+        // Buttons
         buttonViewDetails.setOnClickListener {
             startActivity(Intent(this, ViewPageActivity::class.java))
         }
-
         buttonCallEmergency.setOnClickListener {
             Toast.makeText(this, "Calling emergency services...", Toast.LENGTH_SHORT).show()
-            // you can start dialer or an activity here
         }
-
         buttonMuteAlarm.setOnClickListener {
             Toast.makeText(this, "Alarm muted temporarily.", Toast.LENGTH_SHORT).show()
         }
 
         // Bottom navigation
-        navDashboard.setOnClickListener {
-            // We're already here — keep behavior consistent
-        }
         navAlerts.setOnClickListener {
             startActivity(Intent(this, AlertActivity::class.java))
             overridePendingTransition(0, 0)
@@ -125,9 +118,8 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
         presenter.stop()
     }
 
-    // --- View interface implementations ---
+    // --- View interface ---
     override fun showLoading(isLoading: Boolean) {
-        // Your layout does not contain a ProgressBar, so use the last-updated text as a simple indicator
         textLastUpdated.text = if (isLoading) "Loading..." else textLastUpdated.text
     }
 
@@ -137,7 +129,6 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
 
     override fun showStatus(status: String) {
         textStatus.text = status
-        // color based on status text
         when (status.lowercase()) {
             "safe" -> textStatus.setTextColor("#2E7D32".toColorInt())
             "warning" -> textStatus.setTextColor("#FBC02D".toColorInt())
@@ -151,7 +142,6 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
     }
 
     override fun showLastUpdated(time: String) {
-        // keep format similar to your UI
         textLastUpdated.text = if (time.isBlank()) "" else "Last updated $time"
     }
 

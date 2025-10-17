@@ -13,8 +13,8 @@ interface DashboardContract {
     }
 
     interface Presenter {
-        fun start()   // begin listening / loading
-        fun stop()    // cleanup listeners
+        fun start()
+        fun stop()
     }
 
     interface Repository {

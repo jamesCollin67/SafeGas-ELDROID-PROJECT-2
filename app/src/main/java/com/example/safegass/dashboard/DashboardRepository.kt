@@ -131,7 +131,6 @@ class DashboardRepository : DashboardContract.Repository {
             is Int -> "${value} ppm"
             is Double -> "${value.toInt()} ppm"
             is String -> {
-                // if already contains "ppm" return as-is, else try to extract digits or return original string
                 if (value.contains("ppm", ignoreCase = true)) value
                 else {
                     val digits = value.filter { it.isDigit() }
@@ -144,7 +143,6 @@ class DashboardRepository : DashboardContract.Repository {
 
     private fun deriveStatusFromPpm(ppmString: String): String {
         val num = ppmString.filter { it.isDigit() }.toIntOrNull() ?: 0
-        // thresholds from your layout: Safe = 0–500, Warning = 501–1000, Danger 1001+
         return when {
             num <= 500 -> "Safe"
             num <= 1000 -> "Warning"
