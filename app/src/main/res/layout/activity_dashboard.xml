@@ -23,7 +23,7 @@
             android:paddingTop="12dp"
             android:gravity="center_horizontal">
 
-            <!-- Header: menu left, title center -->
+            <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,12 +48,12 @@
                     android:textColor="#000000" />
             </RelativeLayout>
 
-            <!-- Image card (rounded) -->
+            <!-- Image + upload -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:background="@drawable/card_background"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="8dp">
 
                 <ImageView
                     android:id="@+id/imageHouseGas"
@@ -62,9 +62,46 @@
                     android:src="@drawable/gas"
                     android:scaleType="centerCrop"
                     android:contentDescription="house illustration" />
+
+                <!-- Plus upload button -->
+                <ImageButton
+                    android:id="@+id/buttonUploadImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/button_circle_gray"
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="Upload Image"
+                    android:padding="8dp" />
             </FrameLayout>
 
-            <!-- PPM + status block with View Details button -->
+            <!-- Location input -->
+            <EditText
+                android:id="@+id/editLocationInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter location name (e.g. Kitchen Sensor)"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_background_gray"
+                android:textColor="#000000"
+                android:textSize="13sp" />
+
+            <!-- Save Location centered -->
+            <Button
+                android:id="@+id/buttonSaveLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Save Location"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:background="@drawable/button_background_green"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp" />
+
+            <!-- PPM + status block -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +109,6 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="8dp">
 
-                <!-- Left column -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -106,7 +142,6 @@
                         android:layout_marginTop="2dp" />
                 </LinearLayout>
 
-                <!-- Right: View Details button -->
                 <Button
                     android:id="@+id/buttonViewDetails"
                     android:layout_width="wrap_content"
@@ -120,7 +155,7 @@
                     android:background="@drawable/button_background_green" />
             </LinearLayout>
 
-            <!-- Action Buttons row -->
+            <!-- Action Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,14 +204,13 @@
                 android:background="#E0E0E0"
                 android:layout_marginBottom="12dp" />
 
-            <!-- INDICATOR BAR -->
+            <!-- Indicator Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginBottom="10dp">
 
-                <!-- Colored bar -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="18dp"
@@ -203,14 +237,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Safe / Warning / Danger row -->
+            <!-- Status Legend -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="18dp">
 
-                <!-- Safe -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -235,7 +268,6 @@
                         android:layout_marginTop="6dp" />
                 </LinearLayout>
 
-                <!-- Warning -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -260,7 +292,6 @@
                         android:layout_marginTop="6dp" />
                 </LinearLayout>
 
-                <!-- Danger -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -286,7 +317,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Overview header -->
+            <!-- Overview Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,7 +327,6 @@
                 android:textColor="#000000"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Overview cards -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

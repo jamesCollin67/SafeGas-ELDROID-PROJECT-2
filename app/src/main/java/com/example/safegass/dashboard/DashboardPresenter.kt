@@ -1,39 +1,37 @@
 package com.example.safegass.dashboard
 
+import android.net.Uri
+
 class DashboardPresenter(
-    private var view: DashboardContract.View?,
-    private val repository: DashboardContract.Repository
+    private val view: DashboardContract.View,
+    private val repository: DashboardRepository
 ) : DashboardContract.Presenter {
 
-    private val repoCallback = object : DashboardContract.RepositoryCallback {
-        override fun onData(data: DashboardData) {
-            view?.showLoading(false)
-            view?.showPPM(data.ppm)
-            view?.showStatus(data.status)
-            view?.showLocation(data.location)
-            view?.showLastUpdated(data.lastUpdated)
-            view?.showOverview(
-                data.activeAlerts,
-                data.onlineDevices,
-                data.avgPpm,
-                data.peakPpm
-            )
-        }
-
-        override fun onError(message: String) {
-            view?.showLoading(false)
-            view?.showError(message)
+    override fun loadDashboardData() {
+        view.showLoading(true)
+        repository.fetchDashboardData { data ->
+            view.showLoading(false)
+            if (data != null) {
+                view.showDashboardData(data)
+            } else {
+                view.showError("Failed to fetch data")
+            }
         }
     }
 
-    override fun start() {
-        view?.showLoading(true)
-        repository.addListener(repoCallback)
+    override fun uploadImage(imageUri: Uri) {
+        view.showLoading(true)
+        repository.uploadImage(imageUri) { url ->
+            view.showLoading(false)
+            if (url != null) {
+                view.showUploadSuccess(url)
+            } else {
+                view.showError("Image upload failed")
+            }
+        }
     }
 
-    override fun stop() {
-        repository.removeListener()
-        // 🔴 keep view alive until destroy, not stop
-        // view = null
+    override fun saveLocation(location: String, imageUrl: String?) {
+        repository.saveLocation(location, imageUrl)
     }
 }

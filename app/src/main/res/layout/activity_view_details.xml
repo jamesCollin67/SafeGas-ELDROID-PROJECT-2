@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top bar: back icon + centered title + invisible placeholder to center title -->
+        <!-- Top bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -40,7 +40,6 @@
                 android:gravity="center"
                 android:textColor="@color/text_dark" />
 
-            <!-- Invisible placeholder to keep title centered -->
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -58,7 +57,7 @@
             android:paddingBottom="12dp"
             android:textColor="@color/text_dark" />
 
-        <!-- Row: Status (two-line left) / Online (right) -->
+        <!-- Status Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +66,6 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp">
 
-            <!-- Left two-line block -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -91,94 +89,11 @@
                     android:textColor="@color/green" />
             </LinearLayout>
 
-            <!-- Right single-line status -->
             <TextView
                 android:id="@+id/tv_status_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Online"
-                android:textSize="16sp"
-                android:textColor="@color/text_dark" />
-        </LinearLayout>
-
-        <!-- Temperature Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Temperature"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_dark" />
-
-                <TextView
-                    android:id="@+id/tv_temperature_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="23.8°C"
-                    android:textSize="14sp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/green" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_temperature_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Normal"
-                android:textSize="16sp"
-                android:textColor="@color/text_dark" />
-        </LinearLayout>
-
-        <!-- Humidity Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Humidity"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_dark" />
-
-                <TextView
-                    android:id="@+id/tv_humidity_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="82%"
-                    android:textSize="14sp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/green" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_humidity_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Normal"
                 android:textSize="16sp"
                 android:textColor="@color/text_dark" />
         </LinearLayout>
