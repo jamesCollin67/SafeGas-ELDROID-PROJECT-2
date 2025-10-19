@@ -116,7 +116,17 @@ class AlertActivity : AppCompatActivity(), AlertContract.View {
             // fallback when description empty
             alertDescription.text = if (latest.description.isNotBlank()) latest.description else latest.type
             alertSource.text = latest.source
-            alertTime.text = latest.time
+
+            // ✅ Convert Long timestamp -> readable time (if your DB stores seconds)
+            val formattedTime = try {
+                val date = java.util.Date(latest.time * 1000) // multiply by 1000 if stored in seconds
+                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                sdf.format(date)
+            } catch (e: Exception) {
+                latest.time.toString()
+            }
+
+            alertTime.text = formattedTime
         } else {
             alertTitle.text = "No alerts"
             alertDescription.text = ""
@@ -126,6 +136,7 @@ class AlertActivity : AppCompatActivity(), AlertContract.View {
 
         adapter.updateAlerts(allAlerts)
     }
+
 
     override fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

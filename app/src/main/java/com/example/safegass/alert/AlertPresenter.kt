@@ -17,12 +17,24 @@ class AlertPresenter(private val view: AlertContract.View) : AlertContract.Prese
             override fun onDataChange(snapshot: DataSnapshot) {
                 val alerts = mutableListOf<Alert>()
                 for (child in snapshot.children) {
-                    val alert = child.getValue(Alert::class.java)
-                    if (alert != null) {
-                        alerts.add(alert)
+                    // ✅ Read each field safely, with correct types
+                    val type = child.child("type").getValue(String::class.java) ?: ""
+                    val title = child.child("title").getValue(String::class.java) ?: ""
+                    val description = child.child("description").getValue(String::class.java) ?: ""
+                    val source = child.child("source").getValue(String::class.java) ?: ""
+
+                    // ✅ Try to get timestamp as Long or String
+                    val timeValue = child.child("time").value
+                    val time = when (timeValue) {
+                        is Long -> timeValue
+                        is Double -> timeValue.toLong()
+                        is String -> timeValue.toLongOrNull() ?: 0L
+                        else -> 0L
                     }
+
+                    alerts.add(Alert(type, title, description, source, time))
                 }
-                // Optional: sort by time if time format allows (here we keep insertion order)
+
                 view.showAlerts(alerts)
             }
 
@@ -30,6 +42,7 @@ class AlertPresenter(private val view: AlertContract.View) : AlertContract.Prese
                 view.showError("Failed to load alerts: ${error.message}")
             }
         }
+
         alertsRef.addValueEventListener(listener as ValueEventListener)
     }
 

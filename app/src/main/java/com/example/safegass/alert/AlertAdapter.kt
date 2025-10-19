@@ -22,9 +22,19 @@ class AlertAdapter(private var alerts: List<Alert>) :
             textAlertTitle?.text = alert.title
             txtDescription?.text = alert.description
             txtLocation?.text = alert.source
-            txtTime?.text = alert.time
+
+            // ✅ Convert Long -> readable time (Firebase stores seconds)
+            val formattedTime = try {
+                val date = java.util.Date(alert.time * 1000) // convert seconds → ms
+                val sdf = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault())
+                sdf.format(date)
+            } catch (e: Exception) {
+                alert.time.toString()
+            }
+
+            txtTime?.text = formattedTime
         }
-    }
+    } // ← this brace was missing in your version!
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertViewHolder {
         val view = LayoutInflater.from(parent.context)

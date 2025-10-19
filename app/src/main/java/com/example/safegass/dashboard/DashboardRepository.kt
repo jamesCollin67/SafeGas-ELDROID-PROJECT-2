@@ -1,46 +1,42 @@
 package com.example.safegass.dashboard
 
-import android.net.Uri
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
 
 class DashboardRepository {
 
-    private val database = FirebaseDatabase.getInstance("https://safegasses-default-rtdb.firebaseio.com/")
-    private val dashboardRef = database.getReference("dashboard")
-    private val storage = FirebaseStorage.getInstance().reference.child("dashboard_images")
+    private val databaseRef: DatabaseReference =
+        FirebaseDatabase.getInstance().getReference("dashboard")
 
-    fun fetchDashboardData(callback: (DashboardData?) -> Unit) {
-        dashboardRef.addValueEventListener(object : ValueEventListener {
+    private var listener: ValueEventListener? = null
+
+    fun loadDashboardData(callback: (DashboardData?) -> Unit, onError: (String) -> Unit) {
+        listener = databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val data = snapshot.getValue(DashboardData::class.java)
-                callback(data)
+                if (snapshot.exists()) {
+                    val data = snapshot.getValue(DashboardData::class.java)
+                    callback(data)
+                } else {
+                    onError("No dashboard data found")
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                callback(null)
+                onError(error.message)
             }
         })
     }
 
-    fun uploadImage(imageUri: Uri, onComplete: (String?) -> Unit) {
-        val fileRef = storage.child("${System.currentTimeMillis()}.jpg")
-        val uploadTask = fileRef.putFile(imageUri)
-
-        uploadTask.addOnSuccessListener {
-            fileRef.downloadUrl.addOnSuccessListener { uri ->
-                onComplete(uri.toString())
-            }
-        }.addOnFailureListener {
-            onComplete(null)
-        }
+    fun saveLocation(location: String, imageUrl: String?, onComplete: () -> Unit, onError: (String) -> Unit) {
+        val updateMap = mapOf(
+            "location" to location,
+            "imageUrl" to (imageUrl ?: "")
+        )
+        databaseRef.updateChildren(updateMap)
+            .addOnSuccessListener { onComplete() }
+            .addOnFailureListener { onError(it.message ?: "Failed to save location") }
     }
 
-    fun saveLocation(location: String, imageUrl: String?) {
-        val dataMap = mapOf(
-            "location" to location,
-            "imageUrl" to imageUrl
-        )
-        dashboardRef.updateChildren(dataMap)
+    fun removeListeners() {
+        listener?.let { databaseRef.removeEventListener(it) }
     }
 }
