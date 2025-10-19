@@ -1,8 +1,13 @@
 package com.example.safegass.register
 
-import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
-class RegisterModel(private val context: Context) : RegisterContract.Model {
+class RegisterModel : RegisterContract.Model {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database = FirebaseDatabase.getInstance("https://safegasses-default-rtdb.firebaseio.com/")
+    private val usersRef = database.getReference("users")
 
     override fun registerUser(
         fullName: String,
@@ -10,20 +15,21 @@ class RegisterModel(private val context: Context) : RegisterContract.Model {
         password: String,
         callback: (Boolean, String?) -> Unit
     ) {
-        val prefs = context.getSharedPreferences("users", Context.MODE_PRIVATE)
-
-        // Check if email already exists
-        if (prefs.contains(email)) {
-            callback(false, "User already exists with this email.")
-            return
-        }
-
-        // Save email and password
-        prefs.edit().putString(email, password).apply()
-
-        // You could also save fullName if needed
-        prefs.edit().putString("${email}_fullname", fullName).apply()
-
-        callback(true, null)
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
+                    val user = mapOf(
+                        "uid" to uid,
+                        "fullName" to fullName,
+                        "email" to email
+                    )
+                    usersRef.child(uid).setValue(user)
+                        .addOnSuccessListener { callback(true, null) }
+                        .addOnFailureListener { e -> callback(false, e.message) }
+                } else {
+                    callback(false, task.exception?.message)
+                }
+            }
     }
 }

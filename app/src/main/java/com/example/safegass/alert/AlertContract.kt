@@ -5,7 +5,9 @@ interface AlertContract {
         fun showAlerts(alerts: List<Alert>)
         fun showError(message: String)
     }
+
     interface Presenter {
         fun loadAlerts()
+        fun removeListeners() // optional to stop listening when activity destroyed
     }
 }

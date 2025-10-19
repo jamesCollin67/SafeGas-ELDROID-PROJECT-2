@@ -41,7 +41,26 @@ class LoginActivity : Activity(), LoginContract.View {
         buttonSignIn.setOnClickListener {
             val email = editTextEmail.text.toString().trim()
             val password = editTextPassword.text.toString().trim()
-            presenter.createAccount(email, password)
+
+            // ✅ Validation
+            if (email.isEmpty()) {
+                editTextEmail.error = "Email is required"
+                return@setOnClickListener
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editTextEmail.error = "Enter a valid email"
+                return@setOnClickListener
+            }
+            if (password.isEmpty()) {
+                editTextPassword.error = "Password is required"
+                return@setOnClickListener
+            }
+            if (password.length < 6) {
+                editTextPassword.error = "Password must be at least 6 characters"
+                return@setOnClickListener
+            }
+
+            presenter.handleLogin(email, password)
         }
 
         textForgotPassword.setOnClickListener {

@@ -1,11 +1,10 @@
 package com.example.safegass.register
 
 class RegisterPresenter(
-    private val view: RegisterContract.View,
-    context: android.content.Context
+    private val view: RegisterContract.View
 ) : RegisterContract.Presenter {
 
-    private val model: RegisterContract.Model = RegisterModel(context)
+    private val model: RegisterContract.Model = RegisterModel()
 
     override fun onRegisterClicked(
         fullName: String,

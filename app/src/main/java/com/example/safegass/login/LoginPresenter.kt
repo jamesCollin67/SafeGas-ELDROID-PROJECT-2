@@ -1,26 +1,38 @@
 package com.example.safegass.login
 
-import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
-class LoginPresenter(private val view: LoginContract.View) {
+class LoginPresenter(private val view: LoginContract.View) : LoginContract.Presenter {
 
-    fun createAccount(email: String, password: String) {
-        val prefs = view.getContext().getSharedPreferences("users", Context.MODE_PRIVATE)
-        if (prefs.contains(email)) {
-            handleLogin(email, password)
-        } else {
-            prefs.edit().putString(email, password).apply()
-            view.showLoginSuccess()
-        }
-    }
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database = FirebaseDatabase.getInstance("https://safegasses-default-rtdb.firebaseio.com/")
+    private val usersRef = database.getReference("users")
 
-    fun handleLogin(email: String, password: String) {
-        val prefs = view.getContext().getSharedPreferences("users", Context.MODE_PRIVATE)
-        val storedPassword = prefs.getString(email, null)
-        if (storedPassword != null && storedPassword == password) {
-            view.showLoginSuccess()
-        } else {
-            view.showLoginError("Invalid email or password.")
-        }
+    override fun handleLogin(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = auth.currentUser?.uid
+                    if (uid != null) {
+                        // ✅ Optional: check if user profile exists in DB
+                        usersRef.child(uid).get()
+                            .addOnSuccessListener { snapshot ->
+                                if (snapshot.exists()) {
+                                    view.showLoginSuccess()
+                                } else {
+                                    view.showLoginError("User profile not found.")
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                view.showLoginError("Database error: ${e.message}")
+                            }
+                    } else {
+                        view.showLoginError("Login failed: UID not found.")
+                    }
+                } else {
+                    view.showLoginError("Login failed: ${task.exception?.message}")
+                }
+            }
     }
 }

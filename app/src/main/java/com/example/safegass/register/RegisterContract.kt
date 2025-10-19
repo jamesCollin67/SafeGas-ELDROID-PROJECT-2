@@ -1,7 +1,6 @@
 package com.example.safegass.register
 
 interface RegisterContract {
-
     interface View {
         fun showRegistrationSuccess()
         fun showRegistrationError(message: String)

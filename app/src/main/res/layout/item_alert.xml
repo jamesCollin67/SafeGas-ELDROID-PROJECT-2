@@ -5,43 +5,53 @@
     android:orientation="vertical"
     android:padding="12dp"
     android:background="@drawable/bg_card"
-    android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="8dp">
 
-    <!-- Message text -->
     <TextView
         android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Danger: Gas leak detected"
+        android:text="Danger"
         android:textStyle="bold"
-        android:textSize="14sp"
-        android:textColor="#000000" />
+        android:textSize="12sp" />
 
-    <!-- item_alert.xml -->
     <TextView
         android:id="@+id/textAlertTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-    <!-- Location -->
-    <TextView
-        android:id="@+id/txtLocation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kitchen Sensor"
-        android:textSize="12sp"
-        android:textColor="#666666"
-        android:layout_marginTop="2dp"/>
+        android:text="Gas leak detected"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp" />
 
-    <!-- Time -->
     <TextView
-        android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2 min ago"
-        android:textSize="12sp"
-        android:textColor="#888888"
-        android:layout_marginTop="2dp"/>
+        android:text="Danger! Gas leak detected in kitchen. Please evacuate."
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"
+        android:textColor="#666666" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/txtLocation"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Kitchen Sensor"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 min ago"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>

@@ -8,4 +8,8 @@ interface LoginContract {
         fun showLoginError(message: String)
         fun getContext(): Context
     }
+
+    interface Presenter {
+        fun handleLogin(email: String, password: String)
+    }
 }
