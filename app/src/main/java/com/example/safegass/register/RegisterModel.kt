@@ -10,7 +10,8 @@ class RegisterModel : RegisterContract.Model {
     private val usersRef = database.getReference("users")
 
     override fun registerUser(
-        fullName: String,
+        firstName: String,
+        lastName: String,
         email: String,
         password: String,
         callback: (Boolean, String?) -> Unit
@@ -21,7 +22,8 @@ class RegisterModel : RegisterContract.Model {
                     val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
                     val user = mapOf(
                         "uid" to uid,
-                        "fullName" to fullName,
+                        "firstName" to firstName,
+                        "lastName" to lastName,
                         "email" to email
                     )
                     usersRef.child(uid).setValue(user)

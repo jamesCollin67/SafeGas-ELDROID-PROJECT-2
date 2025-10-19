@@ -8,7 +8,8 @@ interface RegisterContract {
 
     interface Presenter {
         fun onRegisterClicked(
-            fullName: String,
+            firstName: String,
+            lastName: String,
             email: String,
             password: String,
             confirmPassword: String,
@@ -17,6 +18,12 @@ interface RegisterContract {
     }
 
     interface Model {
-        fun registerUser(fullName: String, email: String, password: String, callback: (Boolean, String?) -> Unit)
+        fun registerUser(
+            firstName: String,
+            lastName: String,
+            email: String,
+            password: String,
+            callback: (Boolean, String?) -> Unit
+        )
     }
 }

@@ -21,7 +21,8 @@ class RegisterActivity : Activity(), RegisterContract.View {
 
         presenter = RegisterPresenter(this)
 
-        val etFullName = findViewById<EditText>(R.id.editTextFullName)
+        val etFirstName = findViewById<EditText>(R.id.editTextFirstName)
+        val etLastName = findViewById<EditText>(R.id.editTextLastName)
         val etEmail = findViewById<EditText>(R.id.editTextEmail)
         val etPassword = findViewById<EditText>(R.id.editTextPassword)
         val etConfirm = findViewById<EditText>(R.id.editTextConfirmPassword)
@@ -51,7 +52,8 @@ class RegisterActivity : Activity(), RegisterContract.View {
 
         btnCreate.setOnClickListener {
             presenter.onRegisterClicked(
-                etFullName.text.toString().trim(),
+                etFirstName.text.toString().trim(),
+                etLastName.text.toString().trim(),
                 etEmail.text.toString().trim(),
                 etPassword.text.toString(),
                 etConfirm.text.toString(),

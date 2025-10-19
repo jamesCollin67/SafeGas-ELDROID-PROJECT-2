@@ -7,14 +7,16 @@ class RegisterPresenter(
     private val model: RegisterContract.Model = RegisterModel()
 
     override fun onRegisterClicked(
-        fullName: String,
+        firstName: String,
+        lastName: String,
         email: String,
         password: String,
         confirmPassword: String,
         agreedToTerms: Boolean
     ) {
         when {
-            fullName.isBlank() || email.isBlank() || password.isBlank() || confirmPassword.isBlank() -> {
+            firstName.isBlank() || lastName.isBlank() || email.isBlank() ||
+                    password.isBlank() || confirmPassword.isBlank() -> {
                 view.showRegistrationError("Please fill in all required fields.")
                 return
             }
@@ -35,7 +37,7 @@ class RegisterPresenter(
                 return
             }
             else -> {
-                model.registerUser(fullName, email, password) { success, error ->
+                model.registerUser(firstName, lastName, email, password) { success, error ->
                     if (success) view.showRegistrationSuccess()
                     else view.showRegistrationError(error ?: "Registration failed.")
                 }
