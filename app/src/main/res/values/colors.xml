@@ -22,6 +22,10 @@
     <color name="text_dark">#222222</color>
     <color name="text_darker">#111111</color>
     <color name="green">#4CAF50</color>
+    <color name="safe_green">#4CAF50</color>
+    <color name="yellow">#FFC107</color>
+    <color name="red">#F44336</color>
+
 
 
 </resources>
