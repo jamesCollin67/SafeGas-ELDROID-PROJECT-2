@@ -14,6 +14,7 @@ interface DashboardContract {
         fun showOverview(activeAlerts: Int, onlineDevices: Int, avgPPM: Int, peakPPM: Int)
         fun showToast(message: String)
         fun showError(error: String)
+        fun clearLocationInput()
     }
 
     interface Presenter {

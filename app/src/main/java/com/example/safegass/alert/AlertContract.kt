@@ -4,6 +4,8 @@ interface AlertContract {
     interface View {
         fun showAlerts(alerts: List<Alert>)
         fun showError(message: String)
+        fun showDashboardStatus(alert: Alert)
+
     }
 
     interface Presenter {

@@ -5,5 +5,6 @@ data class Alert(
     val title: String = "",
     val description: String = "",
     val source: String = "",
-    val time: Long = 0   // ✅ FIX: change from String to Long
+    val time: Long = 0,
+    val ppm: Int = 0
 )

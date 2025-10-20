@@ -27,6 +27,7 @@ class DashboardRepository : DashboardContract.Repository {
         })
     }
 
+
     override fun saveLocation(location: String, callback: (Boolean) -> Unit) {
         val userId = auth.currentUser?.uid ?: return
         val ref = database.getReference("users/$userId/dashboard/location")

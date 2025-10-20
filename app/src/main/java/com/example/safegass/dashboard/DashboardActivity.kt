@@ -124,11 +124,35 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
 
     override fun showStatus(status: String) {
         textStatus.text = status
+
+        // Change text color based on gas safety status
+        when (status) {
+            "Safe" -> {
+                textStatus.setTextColor(getColor(android.R.color.holo_green_dark))
+            }
+            "Warning" -> {
+                textStatus.setTextColor(getColor(android.R.color.holo_orange_light))
+            }
+            "Danger" -> {
+                textStatus.setTextColor(getColor(android.R.color.holo_red_dark))
+            }
+            else -> {
+                textStatus.setTextColor(getColor(android.R.color.darker_gray))
+            }
+        }
     }
 
+
     override fun showLocation(location: String) {
+        // 👇 Show the saved location name in the label only (not EditText)
         textLocation.text = if (location.isBlank()) "Please save a location" else location
+
+        // 👇 Make sure the EditText stays empty after saving
+        // (prevents the location name from reappearing in the input box)
+        editLocationInput.text.clear()
     }
+
+
 
     override fun showLastUpdated(time: String) {
         textLastUpdated.text = "Last updated: $time"
@@ -148,6 +172,10 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
     override fun showError(error: String) {
         Toast.makeText(this, "Error: $error", Toast.LENGTH_LONG).show()
     }
+    override fun clearLocationInput() {
+        editLocationInput.text.clear()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

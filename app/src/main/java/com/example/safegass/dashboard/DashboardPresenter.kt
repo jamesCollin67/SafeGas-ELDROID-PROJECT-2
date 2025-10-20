@@ -35,11 +35,13 @@ class DashboardPresenter(
             if (success) {
                 view?.showToast("Location saved successfully.")
                 view?.showLocation(location)
+                view?.clearLocationInput()  // 👈 This now works cleanly
             } else {
                 view?.showError("Failed to save location.")
             }
         }
     }
+
 
     override fun uploadImage(imageUri: Uri) {
         repository.uploadImage(imageUri) { url ->

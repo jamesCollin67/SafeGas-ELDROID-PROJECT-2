@@ -262,7 +262,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0–500 ppm"
+                        android:text="0–100 ppm"
                         android:textSize="12sp"
                         android:textColor="#7A7A7A"
                         android:layout_marginTop="6dp" />
@@ -286,7 +286,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="501–1000 ppm"
+                        android:text="100–300 ppm"
                         android:textSize="12sp"
                         android:textColor="#7A7A7A"
                         android:layout_marginTop="6dp" />
@@ -310,7 +310,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1001+ ppm"
+                        android:text="300 -1000+ ppm"
                         android:textSize="12sp"
                         android:textColor="#7A7A7A"
                         android:layout_marginTop="6dp" />

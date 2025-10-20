@@ -77,11 +77,34 @@ class AlertActivity : AppCompatActivity(), AlertContract.View {
     }
 
     private fun setupTabClicks() {
-        tabAll.setOnClickListener { adapter.updateAlerts(allAlerts) }
-        tabDanger.setOnClickListener { adapter.updateAlerts(allAlerts.filter { it.type.equals("Danger", true) }) }
-        tabWarning.setOnClickListener { adapter.updateAlerts(allAlerts.filter { it.type.equals("Warning", true) }) }
-        tabInfo.setOnClickListener { adapter.updateAlerts(allAlerts.filter { it.type.equals("Info", true) }) }
+        tabAll.setOnClickListener {
+            adapter.updateAlerts(allAlerts)
+            setActiveTab(tabAll)
+        }
+        tabDanger.setOnClickListener {
+            adapter.updateAlerts(allAlerts.filter { it.type.equals("Danger", true) })
+            setActiveTab(tabDanger)
+        }
+        tabWarning.setOnClickListener {
+            adapter.updateAlerts(allAlerts.filter { it.type.equals("Warning", true) })
+            setActiveTab(tabWarning)
+        }
+        tabInfo.setOnClickListener {
+            adapter.updateAlerts(allAlerts.filter { it.type.equals("Safe", true) })
+            setActiveTab(tabInfo)
+        }
     }
+    private fun setActiveTab(selected: TextView) {
+        val tabs = listOf(tabAll, tabDanger, tabWarning, tabInfo)
+        tabs.forEach {
+            it.setBackgroundResource(0) // remove any previous background
+            it.setTextColor(android.graphics.Color.BLACK) // reset to default text color
+        }
+        selected.setBackgroundResource(R.drawable.tab_selected_bg) // highlight selected tab
+        selected.setTextColor(android.graphics.Color.WHITE)
+    }
+
+
 
     private fun setupNavigationBar() {
         navDashboard.setOnClickListener {
@@ -135,6 +158,20 @@ class AlertActivity : AppCompatActivity(), AlertContract.View {
         }
 
         adapter.updateAlerts(allAlerts)
+    }
+    override fun showDashboardStatus(alert: Alert) {
+        alertTitle.text = alert.title
+        alertDescription.text = alert.description
+        alertSource.text = alert.source
+        alertTime.text = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault())
+            .format(java.util.Date(alert.time * 1000))
+
+        // Optional: color change depende sa status
+        when (alert.type.lowercase()) {
+            "safe" -> alertTitle.setTextColor(android.graphics.Color.parseColor("#00C853"))
+            "warning" -> alertTitle.setTextColor(android.graphics.Color.parseColor("#FFA000"))
+            "danger" -> alertTitle.setTextColor(android.graphics.Color.parseColor("#D50000"))
+        }
     }
 
 
