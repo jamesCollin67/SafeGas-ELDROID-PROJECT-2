@@ -19,22 +19,24 @@ class HistoryPresenter(private val view: HistoryContract.View) : HistoryContract
     }
 
     override fun applyFilters(from: String, to: String, location: String) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val fromDate = if (from.isNotEmpty()) sdf.parse(from) else null
+        val toDate = if (to.isNotEmpty()) sdf.parse(to) else null
+
         val filtered = allRecords.filter { record ->
             val matchLocation = if (location.isNotEmpty())
                 record.location.contains(location, ignoreCase = true)
             else true
 
-            val matchDate = if (from.isNotEmpty() && to.isNotEmpty()) {
-                try {
-                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val fromDate = sdf.parse(from)
-                    val toDate = sdf.parse(to)
-                    val recordDate = sdf.parse(record.timestamp.substring(0, 10))
-                    recordDate != null && fromDate != null && toDate != null &&
-                            !recordDate.before(fromDate) && !recordDate.after(toDate)
-                } catch (e: Exception) {
-                    true
-                }
+            val recordDate = try {
+                sdf.parse(record.timestamp.substring(0, 10))
+            } catch (e: Exception) {
+                null
+            }
+
+            val matchDate = if (fromDate != null && toDate != null && recordDate != null) {
+                !recordDate.before(fromDate) && !recordDate.after(toDate)
             } else true
 
             matchLocation && matchDate
@@ -50,4 +52,32 @@ class HistoryPresenter(private val view: HistoryContract.View) : HistoryContract
     override fun onDashboardClicked() = view.navigateToDashboard()
     override fun onAlertClicked() = view.navigateToAlert()
     override fun onSettingsClicked() = view.navigateToSettings()
+
+    // === Helper function to handle any timestamp format ===
+    private fun parseDateFlexible(dateStr: String?): Date? {
+        if (dateStr.isNullOrBlank()) return null
+
+        val possibleFormats = listOf(
+            "yyyy-MM-dd",
+            "yyyy/MM/dd",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy/MM/dd HH:mm:ss",
+            "MM/dd/yyyy",
+            "dd-MM-yyyy",
+            "dd/MM/yyyy"
+        )
+
+        for (format in possibleFormats) {
+            try {
+                return SimpleDateFormat(format, Locale.getDefault()).parse(dateStr)
+            } catch (_: Exception) { }
+        }
+
+        try {
+            val trimmed = dateStr.substring(0, 10)
+            return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(trimmed)
+        } catch (_: Exception) { }
+
+        return null
+    }
 }

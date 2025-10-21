@@ -8,7 +8,7 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:paddingTop="8dp"
-    tools:context="view.ViewPageActivity">
+    tools:context=".view.ViewPageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -30,7 +30,6 @@
                 android:contentDescription="Back" />
 
             <TextView
-                android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,7 +45,7 @@
                 android:visibility="invisible" />
         </LinearLayout>
 
-        <!-- Sensor Status Header -->
+        <!-- Sensor Status -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,8 +62,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:paddingVertical="6dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -109,155 +107,13 @@
             android:paddingBottom="12dp"
             android:textColor="@color/text_dark" />
 
-        <!-- History item 1 -->
-        <LinearLayout
-            android:id="@+id/history_item_1"
+        <!-- RecyclerView for Gas Leak History -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:nestedScrollingEnabled="false" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2024-07-20"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_dark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Methane"
-                    android:textSize="14sp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/green" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10:30 AM"
-                    android:textSize="14sp"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/green" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_chevron_right"
-                android:contentDescription="Open" />
-        </LinearLayout>
-
-        <!-- History item 2 -->
-        <LinearLayout
-            android:id="@+id/history_item_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2024-07-15"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_dark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Propane"
-                    android:textSize="14sp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/green" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="02:15 PM"
-                    android:textSize="14sp"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/green" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_chevron_right"
-                android:contentDescription="Open" />
-        </LinearLayout>
-
-        <!-- History item 3 -->
-        <LinearLayout
-            android:id="@+id/history_item_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2024-07-10"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_dark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Carbon Monoxide"
-                    android:textSize="14sp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/green" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="08:45 AM"
-                    android:textSize="14sp"
-                    android:paddingTop="2dp"
-                    android:textColor="@color/green" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_chevron_right"
-                android:contentDescription="Open" />
-        </LinearLayout>
 
         <!-- Sensor Health Header -->
         <TextView
@@ -276,8 +132,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:paddingVertical="6dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -317,8 +172,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:paddingVertical="6dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -358,8 +212,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:paddingVertical="6dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -393,7 +246,7 @@
                 android:textColor="@color/text_dark" />
         </LinearLayout>
 
-        <!-- Connectivity Header -->
+        <!-- Connectivity -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -410,8 +263,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:paddingVertical="6dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -451,8 +303,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="18dp">
+            android:paddingVertical="18dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -485,6 +336,5 @@
                 android:textSize="16sp"
                 android:textColor="@color/text_dark" />
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

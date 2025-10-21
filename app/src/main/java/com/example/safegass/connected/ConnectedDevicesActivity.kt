@@ -1,79 +1,76 @@
 package com.example.safegass.connected
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safegass.R
-import com.example.safegass.settings.SettingsActivity
 
-class ConnectedDevicesActivity : Activity(), ConnectedDevicesContract.View {
+class ConnectedDevicesActivity : AppCompatActivity(), ConnectedDevicesContract.View {
 
     private lateinit var presenter: ConnectedDevicesPresenter
-    private lateinit var recyclerDevices: RecyclerView
-    private lateinit var btnScanQR: Button
-    private lateinit var btnManualEntry: Button
-    private lateinit var btnAddDevice: Button
-    private lateinit var btnCancelAdd: Button
+    private lateinit var adapter: ConnectedDevicesAdapter
+
     private lateinit var inputSerial: EditText
     private lateinit var inputLocation: EditText
-    private lateinit var btnBack: ImageView
+    private lateinit var recyclerDevices: RecyclerView
+    private lateinit var btnAddDevice: Button
+    private lateinit var btnCancelAdd: Button
+    private lateinit var btnScanQR: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connected_devices)
 
-        presenter = ConnectedDevicesPresenter(this, this)
-
-        recyclerDevices = findViewById(R.id.recyclerDevices)
-        btnScanQR = findViewById(R.id.btnScanQR)
-        btnManualEntry = findViewById(R.id.btnManualEntry)
-        btnAddDevice = findViewById(R.id.btnAddDevice)
-        btnCancelAdd = findViewById(R.id.btnCancelAdd)
+        // 🔹 Initialize Views
         inputSerial = findViewById(R.id.inputSerial)
         inputLocation = findViewById(R.id.inputLocation)
-        btnBack = findViewById(R.id.btnMenu)
+        recyclerDevices = findViewById(R.id.recyclerDevices)
+        btnAddDevice = findViewById(R.id.btnAddDevice)
+        btnCancelAdd = findViewById(R.id.btnCancelAdd)
+        btnScanQR = findViewById(R.id.btnScanQR)
 
+        // 🔹 Set up RecyclerView
+        adapter = ConnectedDevicesAdapter(mutableListOf())
         recyclerDevices.layoutManager = LinearLayoutManager(this)
-        recyclerDevices.adapter = ConnectedDevicesAdapter(mutableListOf())
+        recyclerDevices.adapter = adapter
 
+        // 🔹 Presenter
+        presenter = ConnectedDevicesPresenter(this, this)
         presenter.loadDevices()
 
+        // 🔹 Add Device
         btnAddDevice.setOnClickListener {
             val serial = inputSerial.text.toString()
             val location = inputLocation.text.toString()
             presenter.addDevice(serial, location)
         }
 
+        // 🔹 Cancel Button
         btnCancelAdd.setOnClickListener {
-            inputSerial.text.clear()
-            inputLocation.text.clear()
-            Toast.makeText(this, "Add device canceled", Toast.LENGTH_SHORT).show()
+            clearInputFields()
         }
 
+        // 🔹 Scan QR Button
         btnScanQR.setOnClickListener {
             presenter.scanQRCode()
         }
-
-        btnManualEntry.setOnClickListener {
-            Toast.makeText(this, "Enter serial number manually", Toast.LENGTH_SHORT).show()
-        }
-
-        btnBack.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-            finish()
-        }
     }
 
+    // 🔹 Displays list of devices
     override fun showDevices(devices: List<Device>) {
-        (recyclerDevices.adapter as ConnectedDevicesAdapter).updateDevices(devices)
+        adapter.updateDevices(devices)
     }
 
+    // 🔹 Shows messages via Toast
     override fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // 🔹 Clears input fields after adding or canceling
+    override fun clearInputFields() {
+        inputSerial.text.clear()
+        inputLocation.text.clear()
     }
 }

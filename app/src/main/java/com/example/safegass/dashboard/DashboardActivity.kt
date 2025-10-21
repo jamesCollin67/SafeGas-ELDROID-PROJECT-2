@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.safegass.R
+import com.example.safegass.view.ViewPageActivity
 import com.example.safegass.alert.AlertActivity
 import com.example.safegass.history.HistoryActivity
 import com.example.safegass.settings.SettingsActivity
@@ -31,6 +32,8 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
     private lateinit var buttonSaveLocation: Button
     private lateinit var editLocationInput: EditText
     private lateinit var buttonUploadImage: ImageButton
+    private lateinit var buttonViewDetails: Button
+
 
     // Bottom Navigation
     private lateinit var navAlerts: LinearLayout
@@ -61,6 +64,7 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
         textOnlineDevices = findViewById(R.id.textOnlineDevices)
         textAveragePPM = findViewById(R.id.textAveragePPM)
         textPeakPPM = findViewById(R.id.textPeakPPM)
+        buttonViewDetails = findViewById(R.id.buttonViewDetails)
         buttonSaveLocation = findViewById(R.id.buttonSaveLocation)
         editLocationInput = findViewById(R.id.editLocationInput)
         buttonUploadImage = findViewById(R.id.buttonUploadImage)
@@ -75,6 +79,12 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
             val location = editLocationInput.text.toString().trim()
             presenter.saveLocation(location)
         }
+        buttonViewDetails.setOnClickListener {
+            val intent = Intent(this, ViewPageActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
+
 
         buttonUploadImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -109,6 +119,7 @@ class DashboardActivity : AppCompatActivity(), DashboardContract.View {
             }
         }
     }
+
 
     // ==== View Implementation ====
 
