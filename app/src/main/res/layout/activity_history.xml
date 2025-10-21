@@ -71,7 +71,7 @@
         android:padding="10dp"
         android:background="@drawable/edittext_background" />
 
-    <!-- Filter Buttons (Equal Width) -->
+    <!-- Filter Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
             android:textColor="#000" />
     </LinearLayout>
 
-    <!-- Leak History -->
+    <!-- History List -->
     <TextView
         android:text="Leak History"
         android:textStyle="bold"
@@ -147,26 +147,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerAlerts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/item_leak_history" />
-            <include layout="@layout/item_leak_history" />
-            <include layout="@layout/item_leak_history" />
-            <include layout="@layout/item_leak_history" />
-            <include layout="@layout/item_leak_history" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
 
     <TextView
-        android:text="Last sync: 2024-07-24 14:30"
+        android:id="@+id/txtLastSync"
+        android:text="Last sync: 2025-10-21 11:00"
         android:textColor="#888888"
         android:textSize="12sp"
         android:gravity="center"
@@ -174,7 +164,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
 
-    <!-- Bottom Navigation Bar -->
     <include layout="@layout/include_buttom_nav" />
 
 </LinearLayout>
