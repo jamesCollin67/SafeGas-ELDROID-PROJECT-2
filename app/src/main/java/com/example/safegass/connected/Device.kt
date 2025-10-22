@@ -1,6 +1,7 @@
 package com.example.safegass.connected
 
 data class Device(
-    val serial: String,
-    val location: String
+    var serial: String = "",
+    var location: String = ""
 )
+
