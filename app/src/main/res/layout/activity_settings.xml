@@ -201,16 +201,16 @@
                 android:id="@+id/textConnectedDevices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kitchen Sensor"
+                android:text="Loading devices..."
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:paddingBottom="4dp" />
 
             <TextView
                 android:id="@+id/btnConnectedDevices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rename | Location | Remove\nBattery 82%, Last seen 2 min ago"
                 android:drawableRight="@drawable/ic_chevron_right"
                 android:textSize="12sp"
                 android:textColor="#666666"

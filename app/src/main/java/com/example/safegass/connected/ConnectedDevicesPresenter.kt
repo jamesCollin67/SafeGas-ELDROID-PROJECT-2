@@ -1,61 +1,82 @@
 package com.example.safegass.connected
 
 import com.google.firebase.database.*
-import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
 
 class ConnectedDevicesPresenter(
     private val view: ConnectedDevicesContract.View,
-    context: Context
+    private val context: android.content.Context
 ) : ConnectedDevicesContract.Presenter {
 
-    private val dbRef = FirebaseDatabase.getInstance().getReference("devices")
+    private val auth = FirebaseAuth.getInstance()
+    private val dbRef = FirebaseDatabase.getInstance().reference
+
+    private val devicesList = mutableListOf<Device>()
 
     override fun loadDevices() {
-        // Fetch connected devices from Firebase
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val devices = mutableListOf<Device>()
-                for (child in snapshot.children) {
-                    val serial = child.child("serial").getValue(String::class.java) ?: ""
-                    val location = child.child("location").getValue(String::class.java) ?: ""
-                    if (serial.isNotEmpty() && location.isNotEmpty()) {
-                        devices.add(Device(serial, location))
-                    }
-                }
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            view.showMessage("❌ User not logged in.")
+            return
+        }
 
-                if (devices.isNotEmpty()) {
-                    view.showDevices(devices)
-                } else {
-                    view.showMessage("No connected devices found.")
+        val userDevicesRef = dbRef.child("users").child(uid).child("devices")
+
+        // ✅ Listen for realtime device updates
+        userDevicesRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val device = snapshot.getValue(Device::class.java)
+                if (device != null) {
+                    devicesList.add(device)
+                    view.showDevices(devicesList)
                 }
             }
 
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val updated = snapshot.getValue(Device::class.java) ?: return
+                val index = devicesList.indexOfFirst { it.serial == updated.serial }
+                if (index != -1) {
+                    devicesList[index] = updated
+                    view.showDevices(devicesList)
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val removed = snapshot.getValue(Device::class.java) ?: return
+                val index = devicesList.indexOfFirst { it.serial == removed.serial }
+                if (index != -1) {
+                    devicesList.removeAt(index)
+                    view.showDevices(devicesList)
+                }
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {
-                view.showMessage("Failed to load devices: ${error.message}")
+                view.showMessage("❌ Firebase error: ${error.message}")
             }
         })
     }
 
     override fun addDevice(serial: String, location: String) {
-        if (serial.isBlank() || location.isBlank()) {
-            view.showMessage("Please enter both serial and location.")
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            view.showMessage("❌ User not logged in.")
             return
         }
 
-        val newDevice = Device(serial, location)
-        val newRef = dbRef.push()
-        newRef.setValue(newDevice)
+        val device = Device(serial, location, "Online")
+        dbRef.child("users").child(uid).child("devices").child(serial)
+            .setValue(device)
             .addOnSuccessListener {
-                view.showMessage("Device added successfully.")
-                view.clearInputFields() // ✅ clear fields after saving
+                view.showMessage("✅ Device added successfully.")
+                view.clearInputFields()
             }
             .addOnFailureListener {
-                view.showMessage("Failed to add device: ${it.message}")
+                view.showMessage("❌ Failed: ${it.message}")
             }
     }
 
-
     override fun scanQRCode() {
-        view.showMessage("Scanning QR Code... (feature coming soon)")
+        view.showMessage("QR Code scanning feature coming soon.")
     }
 }

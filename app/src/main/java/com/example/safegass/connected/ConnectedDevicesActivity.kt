@@ -22,75 +22,57 @@ class ConnectedDevicesActivity : AppCompatActivity(), ConnectedDevicesContract.V
     private lateinit var inputLocation: EditText
     private lateinit var btnAddDevice: Button
     private lateinit var btnCancelAdd: Button
-    private lateinit var btnBack: ImageView  // 🔙 top arrow
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connected_devices)
 
-        // 🔹 Initialize views
         recyclerDevices = findViewById(R.id.recyclerDevices)
         inputSerial = findViewById(R.id.inputSerial)
         inputLocation = findViewById(R.id.inputLocation)
         btnAddDevice = findViewById(R.id.btnAddDevice)
         btnCancelAdd = findViewById(R.id.btnCancelAdd)
-        btnBack = findViewById(R.id.btnMenu) // arrow icon from layout
+        btnBack = findViewById(R.id.btnMenu)
 
-        // 🔹 Setup RecyclerView
         adapter = ConnectedDevicesAdapter(mutableListOf())
         recyclerDevices.layoutManager = LinearLayoutManager(this)
         recyclerDevices.adapter = adapter
 
-        // 🔹 Initialize Presenter
         presenter = ConnectedDevicesPresenter(this, this)
-
-        // 🔹 Load devices from Firebase
         presenter.loadDevices()
 
-        // 🔹 Add device
         btnAddDevice.setOnClickListener {
             val serial = inputSerial.text.toString().trim()
             val location = inputLocation.text.toString().trim()
             presenter.addDevice(serial, location)
         }
 
-        // 🔹 Cancel input fields
-        btnCancelAdd.setOnClickListener {
-            inputSerial.text.clear()
-            inputLocation.text.clear()
-        }
+        btnCancelAdd.setOnClickListener { clearInputFields() }
 
-        // 🔹 Back button (arrow icon)
         btnBack.setOnClickListener {
-            goBackToSettings()
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
-        // ✅ Handle system back gesture (modern method)
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                goBackToSettings()
+                val intent = Intent(this@ConnectedDevicesActivity, SettingsActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         })
     }
 
-    // ✅ Function for clean navigation back to SettingsActivity
-    private fun goBackToSettings() {
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    // 🔹 Show device list
     override fun showDevices(devices: List<Device>) {
         adapter.updateDevices(devices)
     }
 
-    // 🔹 Toast messages
     override fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    // 🔹 Clear input fields after saving
     override fun clearInputFields() {
         inputSerial.text.clear()
         inputLocation.text.clear()

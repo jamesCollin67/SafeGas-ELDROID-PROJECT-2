@@ -9,7 +9,6 @@
     android:layout_marginBottom="8dp"
     android:elevation="1dp">
 
-    <!-- Device Icon -->
     <ImageView
         android:id="@+id/imgDeviceIcon"
         android:layout_width="32dp"
@@ -17,7 +16,6 @@
         android:src="@drawable/ic_gas_logo"
         android:contentDescription="Sensor icon" />
 
-    <!-- Device Info -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,9 +36,10 @@
             android:id="@+id/txtDeviceInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Battery 82%, Last seen 2 min ago"
+            android:text="Battery 82% • Last seen 2 min ago"
             android:textSize="12sp"
-            android:textColor="#666666" />
+            android:textColor="#666666"
+            android:layout_marginTop="2dp" />
 
         <TextView
             android:id="@+id/txtDeviceActions"
@@ -49,6 +48,6 @@
             android:text="Rename | Location | Remove"
             android:textSize="12sp"
             android:textColor="#007AFF"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="6dp" />
     </LinearLayout>
 </LinearLayout>

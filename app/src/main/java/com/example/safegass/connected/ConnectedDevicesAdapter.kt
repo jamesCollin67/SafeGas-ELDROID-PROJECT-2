@@ -31,13 +31,13 @@ class ConnectedDevicesAdapter(private var devices: MutableList<Device>) :
         val device = devices[position]
         val context = holder.itemView.context
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val dbRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("devices")
+        val dbRef = FirebaseDatabase.getInstance().getReference("users")
+            .child(uid).child("devices")
 
         holder.txtDeviceName.text = device.serial
-        holder.txtDeviceInfo.text = "Location: ${device.location}"
-        holder.txtDeviceActions.text = "Rename | Location | Remove"
+        holder.txtDeviceInfo.text = "Location: ${device.location} | Status: ${device.status}"
 
-        // 🔹 Handle clicks for each action
+        // same AlertDialog logic for rename, move, remove
         holder.txtDeviceActions.setOnClickListener {
             val options = arrayOf("Rename", "Change Location", "Remove Device")
 
@@ -45,7 +45,7 @@ class ConnectedDevicesAdapter(private var devices: MutableList<Device>) :
                 .setTitle("Manage Device: ${device.serial}")
                 .setItems(options) { _, which ->
                     when (which) {
-                        // ✅ Rename device
+                        // ✅ Rename
                         0 -> {
                             val input = EditText(context)
                             input.hint = "Enter new name"
@@ -55,22 +55,16 @@ class ConnectedDevicesAdapter(private var devices: MutableList<Device>) :
                                 .setPositiveButton("Save") { _, _ ->
                                     val newName = input.text.toString().trim()
                                     if (newName.isNotEmpty()) {
-                                        dbRef.orderByChild("serial").equalTo(device.serial)
-                                            .get().addOnSuccessListener { snapshot ->
-                                                for (child in snapshot.children) {
-                                                    child.ref.child("serial").setValue(newName)
-                                                }
-                                                device.serial = newName
-                                                notifyItemChanged(holder.bindingAdapterPosition)
-                                                Toast.makeText(context, "Renamed to $newName", Toast.LENGTH_SHORT).show()
-                                            }
+                                        dbRef.child(device.serial).removeValue()
+                                        dbRef.child(newName).setValue(device.copy(serial = newName))
+                                        Toast.makeText(context, "Renamed to $newName", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                                 .setNegativeButton("Cancel", null)
                                 .show()
                         }
 
-                        // ✅ Change location
+                        // ✅ Change Location
                         1 -> {
                             val input = EditText(context)
                             input.hint = "Enter new location"
@@ -80,47 +74,24 @@ class ConnectedDevicesAdapter(private var devices: MutableList<Device>) :
                                 .setPositiveButton("Save") { _, _ ->
                                     val newLoc = input.text.toString().trim()
                                     if (newLoc.isNotEmpty()) {
-                                        dbRef.orderByChild("serial").equalTo(device.serial)
-                                            .get().addOnSuccessListener { snapshot ->
-                                                for (child in snapshot.children) {
-                                                    child.ref.child("location").setValue(newLoc)
-                                                }
-                                                device.location = newLoc
-                                                notifyItemChanged(holder.bindingAdapterPosition)
-                                                Toast.makeText(context, "Location updated to $newLoc", Toast.LENGTH_SHORT).show()
-                                            }
+                                        dbRef.child(device.serial).child("location").setValue(newLoc)
+                                        Toast.makeText(context, "Location updated", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                                 .setNegativeButton("Cancel", null)
                                 .show()
                         }
 
-                        // ✅ Remove device (instant update)
+                        // ✅ Remove
                         2 -> {
                             AlertDialog.Builder(context)
                                 .setTitle("Remove Device")
-                                .setMessage("Are you sure you want to remove ${device.serial}?")
-                                .setPositiveButton("Remove") { _, _ ->
-                                    dbRef.orderByChild("serial").equalTo(device.serial)
-                                        .get().addOnSuccessListener { snapshot ->
-                                            for (child in snapshot.children) {
-                                                child.ref.removeValue()
-                                            }
-
-                                            // ✅ Remove from local list immediately
-                                            val positionToRemove = holder.bindingAdapterPosition
-                                            if (positionToRemove != RecyclerView.NO_POSITION) {
-                                                devices.removeAt(positionToRemove)
-                                                notifyItemRemoved(positionToRemove)
-                                            }
-
-                                            Toast.makeText(context, "Device removed", Toast.LENGTH_SHORT).show()
-                                        }
-                                        .addOnFailureListener {
-                                            Toast.makeText(context, "Failed to remove: ${it.message}", Toast.LENGTH_SHORT).show()
-                                        }
+                                .setMessage("Remove ${device.serial}?")
+                                .setPositiveButton("Yes") { _, _ ->
+                                    dbRef.child(device.serial).removeValue()
+                                    Toast.makeText(context, "Device removed", Toast.LENGTH_SHORT).show()
                                 }
-                                .setNegativeButton("Cancel", null)
+                                .setNegativeButton("No", null)
                                 .show()
                         }
                     }

@@ -3,11 +3,7 @@ package com.example.safegass.settings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.example.safegass.R
 import com.example.safegass.alert.AlertActivity
 import com.example.safegass.dashboard.DashboardActivity
@@ -16,20 +12,24 @@ import com.example.safegass.login.LoginActivity
 import com.example.safegass.connected.ConnectedDevicesActivity
 import com.example.safegass.profile.ProfilePageActivity
 import com.example.safegass.update.UpdatePasswordActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class SettingsActivity : Activity(), SettingsContract.View {
 
     private lateinit var presenter: SettingsPresenter
-
     private lateinit var inputLanguage: EditText
     private lateinit var textLastSync: TextView
     private lateinit var btnApplyLanguage: Button
     private lateinit var btnManualSync: Button
     private lateinit var btnLogout: Button
     private lateinit var btnConnectedDevices: TextView
-
-    private  lateinit var btnUpdatesPasswords: Button
+    private lateinit var textConnectedDevices: TextView
+    private lateinit var btnUpdatesPasswords: Button
     private lateinit var btnViewProfile: Button
+
+    private lateinit var dbRef: DatabaseReference
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +46,16 @@ class SettingsActivity : Activity(), SettingsContract.View {
         btnConnectedDevices = findViewById(R.id.btnConnectedDevices)
         btnUpdatesPasswords = findViewById(R.id.btnUpdatesPassword)
         btnViewProfile = findViewById(R.id.btnViewProfile)
+        textConnectedDevices = findViewById(R.id.textConnectedDevices)
+
+        // === Firebase Reference ===
+        val uid = auth.currentUser?.uid
+        if (uid != null) {
+            dbRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("devices")
+            loadConnectedDevices()
+        } else {
+            textConnectedDevices.text = "Not logged in"
+        }
 
         // === Load initial settings ===
         presenter.loadSettings()
@@ -63,24 +73,56 @@ class SettingsActivity : Activity(), SettingsContract.View {
             presenter.logout()
         }
 
-        // === Navigation to Connected Devices ===
+        // === Navigate to Connected Devices ===
         btnConnectedDevices.setOnClickListener {
             startActivity(Intent(this, ConnectedDevicesActivity::class.java))
             overridePendingTransition(0, 0)
         }
 
-        // === Navigation to Profile Page ===
+        // === Navigate to Profile Page ===
         btnViewProfile.setOnClickListener {
             startActivity(Intent(this, ProfilePageActivity::class.java))
             overridePendingTransition(0, 0)
         }
+
         btnUpdatesPasswords.setOnClickListener {
             startActivity(Intent(this, UpdatePasswordActivity::class.java))
             overridePendingTransition(0, 0)
         }
 
-        // === Bottom Navigation Bar ===
         setupNavigationBar()
+    }
+
+    // 🔹 Real-time load of connected devices with nice formatting
+    private fun loadConnectedDevices() {
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val devicesDisplay = StringBuilder()
+
+                for (deviceSnap in snapshot.children) {
+                    val location = deviceSnap.child("location").getValue(String::class.java) ?: "Unknown"
+                    val serial = deviceSnap.child("serial").getValue(String::class.java) ?: "No Serial"
+
+                    // Format output like:
+                    // kwarto Sensor (ESP32-KWARTO)
+                    // Rename | Location | Remove
+                    // Battery 82%, Last seen 2 min ago
+                    devicesDisplay.append("$location Sensor ($serial)\n")
+                    devicesDisplay.append("Rename | Location | Remove\n")
+                    devicesDisplay.append("Battery 82%, Last seen 2 min ago\n\n")
+                }
+
+                textConnectedDevices.text = if (devicesDisplay.isEmpty()) {
+                    "No connected devices"
+                } else {
+                    devicesDisplay.toString().trim()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                textConnectedDevices.text = "Failed to load devices: ${error.message}"
+            }
+        })
     }
 
     private fun setupNavigationBar() {
@@ -108,7 +150,7 @@ class SettingsActivity : Activity(), SettingsContract.View {
         }
 
         navSettings.setOnClickListener {
-            // Already in Settings
+            // already here
         }
     }
 
