@@ -1,6 +1,7 @@
 package com.example.safegass.settings
 
 import android.app.Activity
+import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
@@ -23,6 +24,10 @@ class SettingsActivity : Activity(), SettingsContract.View {
     private lateinit var btnApplyLanguage: Button
     private lateinit var btnManualSync: Button
     private lateinit var btnLogout: Button
+    private lateinit var textUserName: TextView
+    private lateinit var textUserEmail: TextView
+    private lateinit var databaseRef: DatabaseReference
+
     private lateinit var btnConnectedDevices: TextView
     private lateinit var textConnectedDevices: TextView
     private lateinit var btnUpdatesPasswords: Button
@@ -47,6 +52,34 @@ class SettingsActivity : Activity(), SettingsContract.View {
         btnUpdatesPasswords = findViewById(R.id.btnUpdatesPassword)
         btnViewProfile = findViewById(R.id.btnViewProfile)
         textConnectedDevices = findViewById(R.id.textConnectedDevices)
+        textUserName = findViewById(R.id.textUserName)
+        textUserEmail = findViewById(R.id.textUserEmail)
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        databaseRef = FirebaseDatabase.getInstance().getReference("users")
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val userRef = databaseRef.child(userId)
+
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val firstname = snapshot.child("firstName").getValue(String::class.java)
+                    val lastname = snapshot.child("lastName").getValue(String::class.java)
+                    val email = snapshot.child("email").getValue(String::class.java)
+
+                    val fullName = listOfNotNull(firstname, lastname).joinToString(" ").trim()
+                    textUserName.text = if (fullName.isNotBlank()) fullName else "Unknown User"
+                    textUserEmail.text = email ?: "No Email Found"
+                }
+
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@SettingsActivity, "Failed to load profile", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
 
         // === Firebase Reference ===
         val uid = auth.currentUser?.uid
@@ -70,8 +103,27 @@ class SettingsActivity : Activity(), SettingsContract.View {
         }
 
         btnLogout.setOnClickListener {
-            presenter.logout()
+            val builder = android.app.AlertDialog.Builder(this)
+            builder.setTitle("Log out of your account?")
+            builder.setMessage("Are you sure you want to log out?")
+
+            builder.setPositiveButton("Log out") { dialog, _ ->
+                presenter.logout()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+
+            // Optional: style the buttons (to make Cancel gray and Log out red)
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(android.graphics.Color.RED)
+            dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(android.graphics.Color.GRAY)
         }
+
 
         // === Navigate to Connected Devices ===
         btnConnectedDevices.setOnClickListener {

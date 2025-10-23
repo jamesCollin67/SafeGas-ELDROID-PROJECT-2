@@ -26,6 +26,8 @@ class ProfilePageActivity : AppCompatActivity(), ProfileContract.View {
     private lateinit var btnEditProfile: Button
     private lateinit var btnMenu: ImageView
 
+    private lateinit var textPhone: TextView
+
     private val storageRef = FirebaseStorage.getInstance().reference
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -49,6 +51,8 @@ class ProfilePageActivity : AppCompatActivity(), ProfileContract.View {
         btnUploadImage = findViewById(R.id.btnUploadImage)
         btnEditProfile = findViewById(R.id.btnEditProfile)
         btnMenu = findViewById(R.id.btnMenu)
+        textPhone = findViewById(R.id.textPhone)
+
 
         // Initialize presenter
         presenter = ProfilePresenter(this, ProfileModel())
@@ -97,11 +101,13 @@ class ProfilePageActivity : AppCompatActivity(), ProfileContract.View {
         userName.text = fullName
         textName.text = fullName
         textEmail.text = profile.email
+        textPhone.text = profile.phone   // ✅ Add this line
 
         if (!profile.imageUrl.isNullOrEmpty()) {
             Glide.with(this).load(profile.imageUrl).into(profileImage)
         }
     }
+
 
     override fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

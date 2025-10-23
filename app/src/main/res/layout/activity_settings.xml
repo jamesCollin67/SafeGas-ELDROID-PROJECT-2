@@ -232,9 +232,10 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/textUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Liam Harper"
+                android:text="Loading name..."
                 android:drawablePadding="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -242,14 +243,16 @@
                 android:textColor="#333333" />
 
             <TextView
+                android:id="@+id/textUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="liam.harper@example.com"
+                android:text="Loading email..."
                 android:drawablePadding="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:textSize="14sp"
                 android:textColor="#333333" />
+
 
             <Button
                 android:id="@+id/btnUpdatesPassword"

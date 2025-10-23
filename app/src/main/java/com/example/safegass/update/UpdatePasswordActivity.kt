@@ -1,6 +1,7 @@
 package com.example.safegass.update
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -25,7 +26,7 @@ class UpdatePasswordActivity : Activity(), UpdatePasswordContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_password)
 
-        presenter = UpdatePasswordPresenter(this)
+        presenter = UpdatePasswordPresenter(this, this)
 
         // Bind views
         inputCurrentPassword = findViewById(R.id.inputCurrentPassword)
@@ -44,14 +45,8 @@ class UpdatePasswordActivity : Activity(), UpdatePasswordContract.View {
         }
 
         // Cancel button → go back to Settings
-        btnCancel.setOnClickListener {
-            navigateBack()
-        }
-
-        // Arrow back → also go back to Settings
-        btnBack.setOnClickListener {
-            navigateBack()
-        }
+        btnCancel.setOnClickListener { navigateBack() }
+        btnBack.setOnClickListener { navigateBack() }
     }
 
     private fun navigateBack() {
@@ -61,13 +56,24 @@ class UpdatePasswordActivity : Activity(), UpdatePasswordContract.View {
         finish()
     }
 
-    // === View Implementations ===
+    // === 🔹 Modern Popup Dialogs ===
     override fun showSuccess(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        navigateBack()
+        AlertDialog.Builder(this)
+            .setTitle("Success")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                navigateBack()
+            }
+            .show()
     }
 
     override fun showError(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 }
