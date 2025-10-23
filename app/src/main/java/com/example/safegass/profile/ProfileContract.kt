@@ -8,10 +8,12 @@ interface ProfileContract {
 
     interface Presenter {
         fun loadProfile()
+        fun saveProfileImageUrl(url: String)
         fun detachView()
     }
 
     interface Model {
-        fun getProfile(): UserProfile?
+        fun getProfile(callback: (UserProfile?, String?) -> Unit)
+        fun updateProfileImage(url: String)
     }
 }

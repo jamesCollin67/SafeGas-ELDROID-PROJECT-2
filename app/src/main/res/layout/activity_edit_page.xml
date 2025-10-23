@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="Full Name"
                 android:textColor="#000000"
                 android:textSize="14sp"
                 android:layout_marginTop="8dp"
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edittext_background"
-                android:hint="Enter name"
+                android:hint="Enter Full name"
                 android:paddingHorizontal="12dp"
                 android:inputType="textPersonName" />
 
@@ -88,7 +88,7 @@
                 android:paddingHorizontal="12dp"
                 android:inputType="textEmailAddress" />
 
-            <!-- Phone Number -->
+            <!-- Phone -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,83 +107,6 @@
                 android:paddingHorizontal="12dp"
                 android:inputType="phone" />
 
-            <!-- Address -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Address"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <EditText
-                android:id="@+id/inputAddress"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/edittext_background"
-                android:hint="Enter address"
-                android:paddingHorizontal="12dp"
-                android:inputType="textPostalAddress" />
-
-            <!-- City -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="City"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <EditText
-                android:id="@+id/inputCity"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/edittext_background"
-                android:hint="Enter city"
-                android:paddingHorizontal="12dp"
-                android:inputType="text" />
-
-            <!-- State -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="State"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <EditText
-                android:id="@+id/inputState"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/edittext_background"
-                android:hint="Enter state"
-                android:paddingHorizontal="12dp"
-                android:inputType="text" />
-
-            <!-- Zip Code -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Zip Code"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="4dp" />
-
-            <EditText
-                android:id="@+id/inputZip"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/edittext_background"
-                android:hint="Enter zip code"
-                android:paddingHorizontal="12dp"
-                android:inputType="number" />
-
-            <!-- Save Changes Button -->
             <Button
                 android:id="@+id/btnSaveChanges"
                 android:layout_width="match_parent"
@@ -194,7 +117,6 @@
                 android:textSize="16sp"
                 android:layout_marginTop="28dp"
                 android:background="@drawable/button_background_green" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

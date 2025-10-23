@@ -1,10 +1,12 @@
 package com.example.safegass.edit
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.safegass.R
 import com.example.safegass.profile.UserProfile
+import com.example.safegass.profile.ProfilePageActivity
 
 class EditProfileActivity : AppCompatActivity(), EditProfileContract.View {
 
@@ -13,10 +15,6 @@ class EditProfileActivity : AppCompatActivity(), EditProfileContract.View {
     private lateinit var inputName: EditText
     private lateinit var inputEmail: EditText
     private lateinit var inputPhone: EditText
-    private lateinit var inputAddress: EditText
-    private lateinit var inputCity: EditText
-    private lateinit var inputState: EditText
-    private lateinit var inputZip: EditText
     private lateinit var btnSaveChanges: Button
     private lateinit var backButton: ImageView
 
@@ -24,54 +22,44 @@ class EditProfileActivity : AppCompatActivity(), EditProfileContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_page)
 
-        // Initialize Views
+        // Initialize views
         inputName = findViewById(R.id.inputName)
         inputEmail = findViewById(R.id.inputEmail)
         inputPhone = findViewById(R.id.inputPhone)
-        inputAddress = findViewById(R.id.inputAddress)
-        inputCity = findViewById(R.id.inputCity)
-        inputState = findViewById(R.id.inputState)
-        inputZip = findViewById(R.id.inputZip)
         btnSaveChanges = findViewById(R.id.btnSaveChanges)
         backButton = findViewById(R.id.backButton)
 
-        // Initialize MVP
+        // Initialize presenter
         presenter = EditProfilePresenter(this, EditProfileModel())
         presenter.loadProfile()
 
-        // Save Button
+        // Save button
         btnSaveChanges.setOnClickListener {
-            val updatedProfile = UserProfile(
-                name = inputName.text.toString(),
-                email = inputEmail.text.toString(),
-                phone = inputPhone.text.toString(),
-                address = inputAddress.text.toString(),
-                city = inputCity.text.toString(),
-                state = inputState.text.toString(),
-                zipCode = inputZip.text.toString()
-            )
-
-            presenter.saveProfile(updatedProfile)
+            val name = inputName.text.toString()
+            val email = inputEmail.text.toString()
+            val phone = inputPhone.text.toString()
+            presenter.saveProfileChanges(name, email, phone)
         }
 
-        // Back Button
+        // Back button → SettingsActivity
         backButton.setOnClickListener {
-            onBackPressed()
+            val intent = Intent(this, ProfilePageActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
+
+    // ==== Contract Implementation ====
 
     override fun showProfile(profile: UserProfile) {
-        inputName.setText(profile.name)
+        val fullName = "${profile.firstName} ${profile.lastName}".trim()
+        inputName.setText(fullName)
         inputEmail.setText(profile.email)
         inputPhone.setText(profile.phone)
-        inputAddress.setText(profile.address)
-        inputCity.setText(profile.city)
-        inputState.setText(profile.state)
-        inputZip.setText(profile.zipCode)
     }
 
-    override fun showSaveSuccess() {
-        Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+    override fun showSuccess(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         finish()
     }
 

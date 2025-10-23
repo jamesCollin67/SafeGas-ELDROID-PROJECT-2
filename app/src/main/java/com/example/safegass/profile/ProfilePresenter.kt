@@ -6,12 +6,17 @@ class ProfilePresenter(
 ) : ProfileContract.Presenter {
 
     override fun loadProfile() {
-        val profile = model.getProfile()
-        if (profile != null) {
-            view?.showProfile(profile)
-        } else {
-            view?.showError("Failed to load profile.")
+        model.getProfile { profile, error ->
+            if (profile != null) {
+                view?.showProfile(profile)
+            } else {
+                view?.showError(error ?: "Failed to load profile.")
+            }
         }
+    }
+
+    override fun saveProfileImageUrl(url: String) {
+        model.updateProfileImage(url)
     }
 
     override fun detachView() {
