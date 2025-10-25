@@ -43,7 +43,6 @@ class ProfilePageActivity : AppCompatActivity(), ProfileContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_page)
 
-        // Initialize views
         userName = findViewById(R.id.userName)
         textName = findViewById(R.id.textName)
         textEmail = findViewById(R.id.textEmail)
@@ -53,31 +52,33 @@ class ProfilePageActivity : AppCompatActivity(), ProfileContract.View {
         btnMenu = findViewById(R.id.btnMenu)
         textPhone = findViewById(R.id.textPhone)
 
-
-        // Initialize presenter
         presenter = ProfilePresenter(this, ProfileModel())
         presenter.loadProfile()
 
-        // Menu button → SettingsActivity
         btnMenu.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // Edit Profile button → EditProfileActivity
         btnEditProfile.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
         }
 
-        // Upload image
         btnUploadImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             imagePicker.launch(intent)
         }
     }
+
+    // ✅ Add this below onCreate()
+    override fun onResume() {
+        super.onResume()
+        presenter.loadProfile()   // reloads Firebase data when coming back
+    }
+
 
     private fun uploadProfileImage(imageUri: Uri) {
         if (userId == null) return
