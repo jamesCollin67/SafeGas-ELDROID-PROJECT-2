@@ -8,6 +8,7 @@ import android.text.method.PasswordTransformationMethod
 import android.widget.*
 import com.example.safegass.R
 import com.example.safegass.login.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class RegisterActivity : Activity(), RegisterContract.View {
 
@@ -68,10 +69,17 @@ class RegisterActivity : Activity(), RegisterContract.View {
     }
 
     override fun showRegistrationSuccess() {
-        Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            "Account created! Please check your Gmail to verify before logging in.",
+            Toast.LENGTH_LONG
+        ).show()
+
+        FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
+
 
     override fun showRegistrationError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

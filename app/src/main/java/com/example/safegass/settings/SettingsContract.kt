@@ -6,6 +6,7 @@ interface SettingsContract {
         fun showLanguage(language: String)
         fun showLogoutSuccess()
         fun showError(message: String)
+        fun showDeactivationDialog() // ✅ new
     }
 
     interface Presenter {
@@ -13,5 +14,7 @@ interface SettingsContract {
         fun applyLanguage(language: String)
         fun manualSync()
         fun logout()
+        fun deactivateAccount() // ✅ new
     }
 }
+

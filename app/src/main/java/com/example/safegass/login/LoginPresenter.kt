@@ -6,16 +6,28 @@ import com.google.firebase.database.FirebaseDatabase
 class LoginPresenter(private val view: LoginContract.View) : LoginContract.Presenter {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val database = FirebaseDatabase.getInstance("https://safegasses-default-rtdb.firebaseio.com/")
+    private val database =
+        FirebaseDatabase.getInstance("https://safegasses-default-rtdb.firebaseio.com/")
     private val usersRef = database.getReference("users")
 
     override fun handleLogin(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val uid = auth.currentUser?.uid
-                    if (uid != null) {
-                        // ✅ Optional: check if user profile exists in DB
+                    val user = auth.currentUser
+
+                    if (user != null) {
+                        // ✅ Check if Gmail is verified
+                        if (!user.isEmailVerified) {
+                            view.showLoginError("Please verify your Gmail before logging in.")
+                            if (view is LoginActivity) {
+                                view.showResendButton() // 👈 show the resend button
+                            }
+                            auth.signOut()
+                            return@addOnCompleteListener
+                        }
+
+                        val uid = user.uid
                         usersRef.child(uid).get()
                             .addOnSuccessListener { snapshot ->
                                 if (snapshot.exists()) {
@@ -28,7 +40,7 @@ class LoginPresenter(private val view: LoginContract.View) : LoginContract.Prese
                                 view.showLoginError("Database error: ${e.message}")
                             }
                     } else {
-                        view.showLoginError("Login failed: UID not found.")
+                        view.showLoginError("Login failed: User not found.")
                     }
                 } else {
                     view.showLoginError("Login failed: ${task.exception?.message}")

@@ -32,6 +32,10 @@ class SettingsActivity : Activity(), SettingsContract.View {
     private lateinit var textConnectedDevices: TextView
     private lateinit var btnUpdatesPasswords: Button
     private lateinit var btnViewProfile: Button
+    private lateinit var connectedDevicesRef: DatabaseReference
+    private lateinit var btnDeactivateAccount: Button
+
+
 
     private lateinit var dbRef: DatabaseReference
     private val auth = FirebaseAuth.getInstance()
@@ -54,6 +58,7 @@ class SettingsActivity : Activity(), SettingsContract.View {
         textConnectedDevices = findViewById(R.id.textConnectedDevices)
         textUserName = findViewById(R.id.textUserName)
         textUserEmail = findViewById(R.id.textUserEmail)
+        btnDeactivateAccount = findViewById(R.id.btnDeactivateAccount)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         databaseRef = FirebaseDatabase.getInstance().getReference("users")
@@ -81,14 +86,17 @@ class SettingsActivity : Activity(), SettingsContract.View {
         }
 
 
+
+
         // === Firebase Reference ===
-        val uid = auth.currentUser?.uid
-        if (uid != null) {
-            dbRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("devices")
-            loadConnectedDevices()
-        } else {
-            textConnectedDevices.text = "Not logged in"
-        }
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        connectedDevicesRef = FirebaseDatabase.getInstance()
+            .getReference("users")
+            .child(uid)
+            .child("connectedDevices")
+
+        loadConnectedDevices()
+
 
         // === Load initial settings ===
         presenter.loadSettings()
@@ -101,6 +109,7 @@ class SettingsActivity : Activity(), SettingsContract.View {
         btnManualSync.setOnClickListener {
             presenter.manualSync()
         }
+
 
         btnLogout.setOnClickListener {
             val builder = android.app.AlertDialog.Builder(this)
@@ -122,6 +131,9 @@ class SettingsActivity : Activity(), SettingsContract.View {
             // Optional: style the buttons (to make Cancel gray and Log out red)
             dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(android.graphics.Color.RED)
             dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(android.graphics.Color.GRAY)
+        }
+        btnDeactivateAccount.setOnClickListener {
+            showDeactivationDialog()
         }
 
 
@@ -147,35 +159,51 @@ class SettingsActivity : Activity(), SettingsContract.View {
 
     // 🔹 Real-time load of connected devices with nice formatting
     private fun loadConnectedDevices() {
-        dbRef.addValueEventListener(object : ValueEventListener {
+        val devicesDisplay = findViewById<TextView>(R.id.textConnectedDevices) // change to your TextView ID
+        connectedDevicesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val devicesDisplay = StringBuilder()
-
-                for (deviceSnap in snapshot.children) {
-                    val location = deviceSnap.child("location").getValue(String::class.java) ?: "Unknown"
-                    val serial = deviceSnap.child("serial").getValue(String::class.java) ?: "No Serial"
-
-                    // Format output like:
-                    // kwarto Sensor (ESP32-KWARTO)
-                    // Rename | Location | Remove
-                    // Battery 82%, Last seen 2 min ago
-                    devicesDisplay.append("$location Sensor ($serial)\n")
-                    devicesDisplay.append("Rename | Location | Remove\n")
-                    devicesDisplay.append("Battery 82%, Last seen 2 min ago\n\n")
-                }
-
-                textConnectedDevices.text = if (devicesDisplay.isEmpty()) {
-                    "No connected devices"
+                if (snapshot.exists()) {
+                    val sb = StringBuilder()
+                    for (deviceSnap in snapshot.children) {
+                        val serial = deviceSnap.child("serial").getValue(String::class.java) ?: "Unknown"
+                        val location = deviceSnap.child("location").getValue(String::class.java) ?: "N/A"
+                        val status = deviceSnap.child("status").getValue(String::class.java) ?: "Unknown"
+                        sb.append("Device: $serial\nLocation: $location\nStatus: $status\n\n")
+                    }
+                    devicesDisplay.text = sb.toString()
                 } else {
-                    devicesDisplay.toString().trim()
+                    devicesDisplay.text = "No connected devices found"
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                textConnectedDevices.text = "Failed to load devices: ${error.message}"
+                devicesDisplay.text = "Failed to load devices: ${error.message}"
             }
         })
     }
+    override fun showDeactivationDialog() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Deactivate Account")
+        builder.setMessage("Are you sure you want to deactivate your account? You can reactivate it by logging in again.")
+
+        builder.setPositiveButton("Deactivate") { dialog, _ ->
+            presenter.deactivateAccount()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+
+        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(android.graphics.Color.RED)
+        dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(android.graphics.Color.GRAY)
+    }
+
+
+
 
     private fun setupNavigationBar() {
         val navDashboard = findViewById<LinearLayout>(R.id.navDashboard)
@@ -205,6 +233,8 @@ class SettingsActivity : Activity(), SettingsContract.View {
             // already here
         }
     }
+
+
 
     // === MVP View Implementations ===
     override fun showLastSync(time: String) {

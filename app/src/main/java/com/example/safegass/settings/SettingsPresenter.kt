@@ -40,4 +40,25 @@ class SettingsPresenter(
         Toast.makeText(appContext, "Logged out successfully", Toast.LENGTH_SHORT).show()
         view.showLogoutSuccess()
     }
+    override fun deactivateAccount() {
+        val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+            val userRef = com.google.firebase.database.FirebaseDatabase.getInstance()
+                .getReference("users").child(uid)
+
+            userRef.child("status").setValue("deactivated")
+                .addOnSuccessListener {
+                    android.widget.Toast.makeText(appContext, "Account marked as deactivated", android.widget.Toast.LENGTH_SHORT).show()
+                    view.showLogoutSuccess()
+                }
+                .addOnFailureListener { e ->
+                    view.showError("Failed to deactivate account: ${e.message}")
+                }
+        } else {
+            view.showError("User not logged in")
+        }
+    }
+
+
 }

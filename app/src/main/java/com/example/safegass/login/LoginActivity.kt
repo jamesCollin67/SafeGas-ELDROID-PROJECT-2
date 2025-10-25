@@ -10,6 +10,7 @@ import com.example.safegass.R
 import com.example.safegass.forgotpassword.ForgotPasswordActivity
 import com.example.safegass.landing.LandingActivity
 import com.example.safegass.register.RegisterActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : Activity(), LoginContract.View {
 
@@ -60,6 +61,7 @@ class LoginActivity : Activity(), LoginContract.View {
                 return@setOnClickListener
             }
 
+
             presenter.handleLogin(email, password)
         }
 
@@ -70,6 +72,25 @@ class LoginActivity : Activity(), LoginContract.View {
         textCreateAccount.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+        val resendButton = findViewById<Button>(R.id.btnResendVerification)
+        resendButton.setOnClickListener {
+            val auth = FirebaseAuth.getInstance()
+            val user = auth.currentUser
+
+            if (user != null && !user.isEmailVerified) {
+                user.sendEmailVerification()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Verification email sent!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Failed to resend email.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            } else {
+                Toast.makeText(this, "Please log in first to resend verification.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     private fun togglePasswordVisibility() {
@@ -95,6 +116,11 @@ class LoginActivity : Activity(), LoginContract.View {
     override fun showLoginError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+    fun showResendButton() {
+        val resendButton = findViewById<Button>(R.id.btnResendVerification)
+        resendButton.visibility = Button.VISIBLE
+    }
+
 
     override fun getContext(): Context = this
 }

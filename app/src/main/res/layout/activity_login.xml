@@ -155,6 +155,16 @@
             android:text="Continue with Google"
             android:textColor="#000000"
             android:background="@drawable/button_background_gray" />
+        <Button
+            android:id="@+id/btnResendVerification"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Resend Verification Email"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_background_gray"
+            android:textColor="#000000" />
+
 
         <!-- Spacer pushes bottom text down -->
         <View
